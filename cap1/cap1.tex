@@ -3,29 +3,80 @@
 % Capitolo "1" Capitolo 1
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mcchap{Capitolo 1}{cap:cap1}
-Qualcosa sul capitolo 1
-\section{section}
-Qualcosa ancora sul capitolo 1
-\section{section again}
-Qualcosa ancora sul capitolo 1
-\subsection{subsection}
-Qualcosa ancora sul capitolo 1
+\mcchap{Sguardo generale sul sistema}{cap:cap1}
+\section{Le vulnerabilità nei software}
+Il mondo attuale è caratterizzato da un livello sempre più elevato di
+digitalizzazione, per questo i sistemi informatici regolano non solo
+le reti digitali, ma anche quelle più tradizionali, come gli impianti di
+produzione e distribuzione d’energia, le reti di trasporto e molto altro. 
+Le infrastrutture informatiche costituiscono quindi l’anima dell’operatività 
+nazionale e aziendale.
 
+Queste infrastrutture informatiche sono sempre più frequentemente oggetto 
+di attacchi hacker da parte di individui ed organizzazioni. 
+Attacchi che in alcuni casi sfruttano vulnerabilità software presenti nei 
+sistemi, in altri casi sfruttano, con l’inganno, individui poco pratici in 
+ambito informatico, ad esempio tramite il phishing, per accedere alle reti 
+aziendali.
+
+Per vulnerabilità si intende una debolezza nel software che, se sfruttata, 
+viola almeno uno dei principi di sicurezza: confidenzialità, integrità e 
+disponibilità. Le vulnerabilità software possono essere di diversa natura,
+ad esempio possono essere presenti nel codice sorgente del software, oppure 
+possono essere presenti nel software stesso, oppure possono essere presenti 
+nel software che viene utilizzato per la gestione del software stesso, 
+ad esempio i sistemi operativi.
+
+
+\section{Concetti per la comprensione delle vulnerabilità}
+Svariati team di sicurezza scoprono e divulgano pubblicamente le vulnerabilità
+in modo indipendente. Dal 1999 il MITRE, un'organizzazione no profit 
+americana, finanziata dal Dipartimento di Sicurezza Nazionale 
+Statunitense (NSA), ha introdotto il programma CVE.
+
+CVE è un acronimo che sta per Common Vulnerabilities and Exposures
+(vulnerabilità comuni ed esposizioni) e si tratta di un database pubblico nel 
+quale vengono aggiunte e aggiornate vulnerabilità, in modo che chiunque possa 
+accedervi e utilizzarlo. 
+È uno strumento molto utile e viene utilizzato come standard da vari istituti 
+di ricerca nel mondo. Ogni vulnerabilità è rappresentata da un identificatore 
+CVE unico, rappresentato nel formato: “CVE-anno-numero”. 
+Ad esempio: CVE-2021-44228 (nel caso della famosa vulnerabilità 
+di Apache Log4j2).
+
+Ogni vulnerabilità inserita nel CVE ha dei parametri di classificazione. 
+Uno dei più importanti è il CVSS ovvero Common Vulnerability Scoring System 
+cioè uno standard che indica la gravità di una vulnerabilità informatica 
+da 0 a 10, dove 10 indica il livello di vulnerabilità più critico. 
+Due usi comuni del CVSS sono il calcolo della gravità delle vulnerabilità 
+scoperte sui propri sistemi e come fattore di prioritizzazione delle 
+attività di riparazione delle vulnerabilità. Il National Vulnerability 
+Database (NVD) fornisce punteggi CVSS per quasi tutte le vulnerabilità.
+
+Viene definita zero-day una vulnerabilità non pubblicamente nota, che può 
+essere utilizzata dai cracker per attaccare un sistema, attraverso un 
+exploit (software che sfrutta la vulnerabilità per bucare il sistema). 
+Vengono chiamate zero-day proprio perché gli sviluppatori hanno “zero giorni” 
+per riparare la falla nel software, prima che qualcuno la possa sfruttare.
+Nel momento in cui il bug viene risolto, la zero-day perde la sua importanza
+perché non può più essere usata contro quel sistema.
+La pericolosità di questi tipi di vulnerabilità sta proprio nel fatto che i 
+produttori del software non hanno ancora rilasciato una patch di sicurezza 
+per risolvere il problema, o nel peggiore dei casi non ne sono 
+neanche a conoscenza. 
+Questi tipi di vulnerabilità sono le più ricercate nei software e spesso 
+vengono anche rivendute al mercato nero (deep web), per farci dei soldi.
+Molto spesso però sono le stesse aziende, sviluppatrici del software, ad avere 
+un programma di bug bounty, per identificare nuove vulnerabilità nei propri
+sistemi, in cambio di premi in denaro per l’utente che segnala a loro
+le vulnerabilità scoperte presenti nel loro software.
+
+
+
+\section{ALTRO}
 \section{Citazioni}
 Per citare bisogna editare il file biblio/biblio.bib e aggiungere in formato bibtex la citazione poi citarla così: citazione~\cite{STORY}. 
 Automaticamente verrà aggiunta alla bibliografia quando citata.
-
-\section{Immagini}
-Si possono caricare immagini ed usare reference per citarle: Fig.~\ref{fig:TDD}
-\begin{figure}[H]
-    \begin{flushright}
-        \centering
-        \includegraphics[width=0.4\textwidth]{imgs/TDDCycle.png}
-        \caption{Ciclo del TDD}
-        \label{fig:TDD}
-    \end{flushright}
-\end{figure}
 
 \section{Tabelle}
 Le tabelle si citano come le immagini: Tab.~\ref{tab:mlp}
