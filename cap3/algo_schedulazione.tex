@@ -197,6 +197,100 @@ schedulare il server.\\
 Codice parziale dell'algoritmo di schedulazione:
 \lstinputlisting[style=custompython, language=Python]{code/scheduling.py}
 
-CALCOLARE COMPLESSITA'
 
-ESEMPIO TEMPORALI DI ESECUZIONE
+\subsection{Complessità e caso peggiore}
+La complessità computazionale in tempo dell'algoritmo di schedulazione dipende 
+principalmente dalla dimensione dell'input, cioè il numero di server da 
+schedulare e il numero di slot di manutenzione disponibili (in base alla 
+lunghezza in giorni della campagna).
+L'algoritmo inizia ordinando i server in base al punteggio di priorità 
+calcolato per ciascuno di essi, e poi prosegue scorrendo tutti i server in 
+ordine di priorità crescente cercando di trovare uno slot di manutenzione 
+valido per ciascuno. La complessità in tempo è dell'ordine di O(N*M), 
+dove N è il numero di server e M è il numero di slot di manutenzione 
+disponibili.\\
+
+Per quanto riguarda la complessità in spazio, l'algoritmo utilizza un 
+ammontare di memoria proporzionale alla dimensione dell'input, in quanto deve 
+mantenere in memoria la lista dei server e il calendario degli slot di 
+manutenzione. La quantità di memoria richiesta non dovrebbe essere un 
+problema per input di dimensioni moderate, poiché la lista dei server e 
+il calendario non dovrebbero essere eccessivamente grandi. Quindi la 
+complessità in spazio dell'algoritmo è O(N).\\
+
+L’algoritmo di schedulazione ha un comportamento computazionale in 
+tempo lineare. Il caso peggiore non si verifica quando ci sono tanti 
+server da schedulare ma quando ci sono molti server con una fascia di 
+manutenzione molto ristretta, che quindi andrebbero tutti schedulati in 
+pochi slot. Questo farebbe riempire gli slot di una particolare fascia di 
+manutenzione o di un gruppo di slot. A quel punto i server si ritroveranno, 
+al termine dell’esecuzione dell’algoritmo, senza uno slot assegnato. 
+In questo caso l’utilizzatore del tool dovrà inserire manualmente uno slot, 
+attraverso l’interfaccia, prima di avviare la campagna.\\
+
+Per evitare di incorrere in troppi server senza schedulazione si è deciso di 
+fissare il limite massimo di 2000 server per singola campagna di aggiornamento.
+
+
+\subsection{Tempi di esecuzione}
+L’algoritmo di schedulazione viene eseguito quando l’utente, attraverso 
+l’interfaccia grafica dell’Hotfix Response Center, seleziona i server da 
+aggiornare. A quel punto si hanno a disposizione pochi secondi per salvare 
+l’elenco dei server a database, recuperare le informazioni per la schedulazione 
+ed eseguire l’algoritmo.
+Tutte queste operazioni sono eseguite da un servizio REST, sviluppato in Django, 
+presente nel Backend.
+
+Il tempo di risposta del servizio e quindi il tempo di attesa dell’utente è 
+la somma di: tempo di salvataggio a database di un record di tipo Item per 
+ogni server della campagna, tempo di recupero delle informazioni necessarie 
+alla schedulazione (fascia di manutenzione e altri parametri) tramite le API 
+dei microservizi del gestionale, tempo di esecuzione dell'algoritmo di 
+schedulazione, tempo di salvataggio a database delle schedulazioni di ogni 
+server e tempo di invio della risposta al client.
+
+La Tabella Tab.~\ref{tab:algo-exec} mostra i tempi, in secondi, di esecuzione 
+dell'algoritmo di schedulazione per diversi quantitativi di server. Come si 
+può vedere, il tempo di schedulazione varia a seconda del numero di server 
+coinvolti nella campagna. Il tempo di recupero delle informazioni necessarie 
+alla schedulazione e il tempo di esecuzione dell'algoritmo sono i principali 
+fattori che contribuiscono alla durata totale dell'operazione. In particolare, 
+il recupero delle informazioni richiede più tempo per i numeri di server più 
+elevati, mentre il tempo di esecuzione dell'algoritmo è relativamente costante. 
+In generale, il servizio REST in Django presente nel Backend riesce a gestire 
+l'operazione in pochi secondi, garantendo un'esperienza utente fluida.\\
+
+\begin {table}[H]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+  
+  \hline
+  \rowcolor[gray]{.66}
+  \textbf{Server} & \textbf{Schedulazione} & \textbf{Recupero info} & \textbf{Con dipendenze} & \textbf{Schedulati}\\
+  
+  \hline
+  \rowcolor[gray]{.87}15 & \textbf{0,150} & 0,55 & 0 & 15 \\
+  \rowcolor[gray]{.95}100 & \textbf{0,185} & 1,42 & 0 & 100 \\
+  \rowcolor[gray]{.87}250 & \textbf{0,329} & 3,19 & 0 & 250 \\
+  \rowcolor[gray]{.95}400 & \textbf{0,487} & 4,37 & 31 & 398 \\
+  \rowcolor[gray]{.87}500 & \textbf{0,647} & 5,56 & 57 & 495 \\
+  \hline
+\end{tabular} 
+\caption {Tempo di esecuzione algoritmo, tempi in secondi} \label{tab:algo-exec}
+\end{center}
+\end{table}
+
+
+La colonna “con dipendenze” mostra, per la relativa campagna di test, quanti 
+erano i server che dipendevano da altri server per l’aggiornamento. Nel caso 
+della campagna con 500 server c’erano 57 server con dipendenze.
+
+L’ultima colonna “schedulati” mostra il numero effettivo di server che 
+l’algoritmo è riuscito a schedulare.\\
+
+Nella campagna con 500 server 
+l’algoritmo di schedulazione è riuscito a trovare in 0,647 secondi uno slot 
+di schedulazione per 495 server. I 5 server rimanenti andranno schedulati a 
+mano, attraverso l’interfaccia grafica del tool. Nel caso in questione i 5 server 
+rimasti fuori hanno una fascia di manutenzione molto ristretta che è stata 
+occupata da altri server con una fascia di manutenzione simile.
