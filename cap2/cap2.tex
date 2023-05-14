@@ -174,7 +174,8 @@ dei task programmati che vengono eseguiti. Cron è un programma di
 utilità dei sistemi di tipo Unix che consente agli utenti di gestire 
 le pianificazione di attività ripetute in un momento specifico.
 La gestione automatica degli aggiornamenti sarà quindi gestita con 
-dei task programmati che faranno partire l’aggiornamento sul server remoto.
+dei task programmati che faranno partire l’aggiornamento sul server remoto.\\
+
 Saranno presenti due cron job:
 \begin{itemize}
 \item job di avvio, schedulato ogni 30 minuti. Questo job seleziona tutte 
@@ -205,13 +206,14 @@ stato dell’aggiornamento.
 Lo scopo è quindi quello di scaricare la patch di aggiornamento dallo 
 storage centrale e far partire l’aggiornamento sul server. Per avere un 
 maggiore controllo sullo stato di avanzamento lo script comunicherà gli 
-stati intermedi durante l’operazione.
+stati intermedi durante l’operazione.\\
+
 Gli stati che si susseguiranno durante l’operazione saranno:
 \begin{itemize}
 \item ping: test connessione all’avvio dello script; 
-\item download patch: scaricamento dell’aggiornamento sul server
-\item esecuzione: installazione dell’aggiornamento
-\item reboot: riavvio del server
+\item download patch: scaricamento dell’aggiornamento sul server;
+\item esecuzione: installazione dell’aggiornamento;
+\item reboot: riavvio del server.
 \end{itemize}
 Al termine del riavvio il job di monitoraggio assegnerà lo stato 
 completato. Se trascorre troppo tempo in uno step intermedio 

@@ -10,13 +10,13 @@ in modo automatico.
 
 Ricopre quindi un ruolo molto importante l’algoritmo di schedulazione. 
 L’algoritmo dovrà essere in grado di trovare una schedulazione 
-migliore per aggiornare i server tenendo conto, durante l'elaborazione, 
+ottimale per aggiornare i server tenendo conto, durante l'elaborazione, 
 di numerosi fattori, dettagliati in seguito. L’affidabilità e la 
 precisione dell’algoritmo sarà fondamentale per poter garantire che 
-tutto avvenga in modo automatico.
+tutto avvenga in modo automatico e nelle corrette tempistiche.\\
 
 La schedulazione avverrà generalmente su un periodo temporale 
-di 2/3 settimane. Ogni giorno della settimana verrà suddiviso in 
+di 2/3 settimane. Ogni giorno della settimana verrà suddiviso in 48 
 slot da 30 minuti. Per ogni slot di tempo sarà possibile aggiornare 
 massimo 5 server contemporaneamente. Questo rende possibile aggiornare 
 fino a 240 server al giorno. La scelta di posizionare più server nello 
@@ -40,7 +40,7 @@ aggiornare il prima possibile.
 
 
 \subsection{Concetto di euristica}
-L’algoritmo realizzato per la schedulazione si basa sul principio di euristica. 
+L’algoritmo realizzato per la schedulazione si basa su un principio euristico. 
 Un'euristica è una tecnica o un metodo basato sull'esperienza o sulla 
 conoscenza generale del problema, che cerca di trovare una soluzione 
 ragionevole in tempi ragionevoli, anche in presenza di problemi di 
@@ -49,19 +49,21 @@ sul buon senso, sulla logica e sulla creatività che, seppur non garantisca la
 soluzione ottimale del problema, può fornire risultati accettabili in tempi 
 ragionevoli. Le euristiche sono spesso utilizzate per risolvere problemi di 
 ottimizzazione in cui il tempo di calcolo richiesto per trovare una soluzione 
-ottimale è troppo elevato.
+ottimale è troppo elevato.\\
 
 Nel caso in questione l’algoritmo di schedulazione non esplora tutti i possibili 
-casi per trovare la soluzione migliore ma si basa su dei calcoli preventivi. 
-Successivamente verranno utilizzati per raggiungere, con un tempo di esecuzione 
-lineare, quella che è una soluzione ottimale per creare un calendario di 
-schedulazione per l’aggiornamento.
+casi per trovare la soluzione migliore ma si basa su dei calcoli preliminari 
+per decidere quali server schedulare per primi.
+Questa tecnica permette di ridurre drasticamente il tempo di esecuzione 
+dell’algoritmo ottenendo un tempo di esecuzione lineare e fornendo una 
+soluzione ottimale per creare un calendario di schedulazione per l’aggiornamento.\\
+
 L’euristica si baserà sul calcolo dell’“availability score” che verrà utilizzato 
 per decidere con che ordine schedulare i server all’interno del calendario.
 
 È appropriato utilizzare un’euristica in quanto il calcolo della soluzione 
 ottimale, che controllerebbe tutte le possibili schedulazioni, richiederebbe un 
-tempo di esecuzione quadratico. Il calcolo è l’utilizzo del “availability score” 
+tempo di esecuzione quadratico. Il calcolo e l’utilizzo del “availability score” 
 per la schedulazione richiederebbe una complessità lineare in termini di tempo e 
 spazio che fornirebbe una soluzione accettabile nel minor tempo possibile.
 
@@ -80,11 +82,11 @@ I giorni della settimana sono rappresentati dalle stringhe:
 LUN, MAR, MER, GIO, VEN, SAB, DOM. Seguiti dalla fascia oraria tra parentesi.
 Una fascia di manutenzione può anche essere composta da più blocchi di fasce 
 orarie, concatenati dal carattere +, come in questo esempio: 
-LUN-MAR-MER(20:00-24:00)+LUN-MAR-MER(00:00-05:00)+SAB-DOM(00:00-24:00)
+LUN-MAR-MER(20:00-24:00)+LUN-MAR-MER(00:00-05:00)+SAB-DOM(00:00-24:00)\\
 
-Per poter interpretare correttamente e capire durante la settimana in quali 
+Per poter interpretare correttamente la stringa e capire durante la settimana in quali 
 slot di 30 minuti può essere inserito il server è stata creata una classe 
-Python capace di interpretare la stringa.
+Python capace di comprendere il significato della stringa.
 
 Le funzionalità principali della classe sono:
 \begin{itemize}
@@ -110,8 +112,8 @@ Chiave 86400 = slot del martedì alle ore 00:00\\
 Questi valori sono ottenuti impostando la costante RESOLUTION\_IN\_MINUTE = 30. 
 Quindi durante la settimana, nel dizionario, saranno presenti 336 slot da 30 minuti.
 
-Dopo aver inizializzato la struttura dati per salvare le disponibilità negli 
-slot inizia l’interpretazione della stringa della fascia di manutenzione.\\
+Dopo aver inizializzato la struttura dati, per salvare le disponibilità negli 
+slot, inizia l’interpretazione della stringa della fascia di manutenzione.\\
 
 Di seguito è riportato il metodo calc\_available\_slots presente all'interno della classe MaintenanceWindowParser:
 
@@ -125,17 +127,22 @@ server è disponibile in quello slot per l’aggiornamento.
 \subsection{Calcolo dello score}
 Dopo aver trovato per ogni server quali sono gli slot disponibili durante la 
 settimana si procede con il calcolo dell’“availability score” di ogni server. 
-Questo score sarà utilizzato per decidere quali server andranno schedulati per primi.
-Availability score corrisponde al numero di secondi in cui il server è disponibile 
+Questo valore numerico sarà utilizzato per decidere quali server andranno schedulati per primi.
+
+L'Availability score corrisponde al numero di secondi in cui il server è disponibile 
 per l’aggiornamento durante la settimana.
 Più lo score sarà basso e meno slot ha un server a disposizione per essere aggiornato.\\
 
 Attraverso l’approccio euristico è stato constatato che schedulando per primi i 
-server con un availability score più basso non compromette la schedulazione di 
+server con un availability score più basso non si compromette la schedulazione degli 
 altri server. Non risulterà quindi necessario provare ogni possibile schedulazione 
 per trovare la migliore ma ci si potrà accontentare della schedulazione deterministica 
 che verrà creata assegnando prima i server con score più basso negli slot in cui 
-possono essere aggiornati.\\
+possono essere aggiornati.
+I server che saranno schedulati per ultimi saranno quelli con score più alto.
+Questo significa che tali server potranno probabilmente essere schedulati 
+negli slot lasciati liberi dai server con score più basso.\\
+
 
 Di seguito è riportato il metodo get\_num\_of\_seconds\_of\_available\_slot della 
 classe MaintenanceWindowParser:
@@ -152,34 +159,43 @@ ore tra uno slot e l’altro.
 
 La struttura utilizzata è un albero. Alla radice è presente un nodo padre. 
 I figli di primo livello sono tutti i server che non hanno dipendenze ma che 
-fanno dipendere altri server, e così via…
+fanno dipendere altri server.
+I figli di secondo livello sono i server che dipendono dai server di primo livello
+che dovranno essere aggiornati 24 ore dopo l'aggiornamento con successo dei filgi 
+di primo livello, e così via\dots
 
 L’albero viene gestito da una semplice classe Python, che viene popolata durante 
-lo scorrimento di tutti i server.
+lo scorrimento preliminare di tutti i server.
 
 
 \subsection{Esecuzione dell’algoritmo}
-TESTO DA RIFARE!!!!
-viene creato un calendario vuoto utilizzando la classe HotfixCalendar, in cui 
-l'intervallo di tempo del calendario viene impostato come la differenza tra la
- data di inizio e di fine della campagna, con una durata degli slot e un numero 
- massimo di elementi per slot specificati dall'utente.
+L’algoritmo di schedulazione risultante è abbastanza semplice. 
+Si inizia con il calcolare il priority score di ogni server.
+Questo valore è la somma tra l’availability score e il grado che 
+ha il server all'interno dell’albero delle dipendenze, se i server non 
+hanno dipendenze avranno grado 0.
 
-Il metodo quindi calcola l'albero delle dipendenze per assegnare priorità alle 
-attività di aggiornamento che hanno dipendenze dalle altre attività. 
-Vengono quindi calcolati i punteggi di priorità per ogni attività di aggiornamento 
-in base alla profondità dell'attività nell'albero delle dipendenze e alla 
-disponibilità della finestra di manutenzione.
+Poi si ordinano i server per priority score crescente (riga 7).
+Successivamente, nel ciclo for di riga 14, si scorrono tutti i server 
+da schedulare presenti nella campagna.
+Per ogni server si estrae la lista di tutti gli slot per cui provare 
+la compatibilità. Questi slot da provare vengono restituiti dal metodo 
+get\_list\_of\_slot\_to\_try (riga 19). Questo metodo restituisce gli slot 
+in ordine temporale restituendo però prima gli slot che hanno meno server 
+già assegnati.
+Per ogni slot restituito si controlla, se è compatibile con la fascia di 
+manutenzione del server (riga 21). Se la fascia di manutenzione permette 
+l’utilizzo di quello slot il server viene schedulato altrimenti si prova 
+per tutti gli slot rimasti.
 
-Il metodo cerca di trovare uno slot disponibile per ogni attività di aggiornamento 
-in base al punteggio di priorità dell'attività e alla disponibilità degli slot. 
-Se l'attività ha dipendenze, viene programmata solo dopo che tutte le attività 
-dipendenti sono state programmate.
+Nel caso non ci sia nessuno slot disponibile, per effettuare 
+l’aggiornamento del server, questo non avrà una schedulazione e non sarà 
+inserito a calendario (riga 31). In questo caso l’operatore, prima 
+dell’avvio della campagna, dovrà selezionare manualmente uno slot per 
+schedulare il server.\\
 
 Codice parziale dell'algoritmo di schedulazione:
 \lstinputlisting[style=custompython, language=Python]{code/scheduling.py}
-
-TOGLIERE CODICE GOOGLE DOCS ALBERO DIPENDENZE
 
 CALCOLARE COMPLESSITA'
 

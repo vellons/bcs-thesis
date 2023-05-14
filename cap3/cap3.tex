@@ -4,35 +4,34 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mcchap{Progettazione}{cap:cap3}
-\section{Analisi di entità ed associazioni}
-Nella fase di progettazione concettuale del progetto, uno dei principali
+\section{Entità ed associazioni}
+Nella fase di progettazione concettuale del tool, uno dei principali
 obiettivi è stata la definizione di un modello di dati che potesse 
 supportare le funzionalità principali dell'applicazione.
 A tal fine, si è deciso di realizzare un database relazionale che 
-contenesse diverse tabelle, tra cui: campaign, item, updatefile, 
-updatejob e updatejobstatushistory. La creazione delle tabelle è gestita 
+contenesse diverse tabelle. La creazione delle tabelle è gestita 
 tramite Django, un framework Python molto conosciuto nello sviluppo di 
-applicativi backend, verrà dettagliato in seguito.
+applicativi backend, verrà dettagliato in seguito.\\
 
 Il database relazionale comprende quindi diverse tabelle, tra cui:
 \begin{itemize}
-\item "campaign": la tabella principale del database, che rappresenta una 
+\item campaign: la tabella principale del database, che rappresenta una 
 campagna di aggiornamento. Ogni record in questa tabella contiene 
 informazioni sulle specifiche della campagna;
-\item "item": tabella che contiene l'insieme dei server che devono essere 
+\item item: tabella che contiene l'insieme dei server che devono essere 
 aggiornati, correlati alla campagna tramite una relazione uno-a-molti. 
-Ogni record in questa tabella rappresenta un singolo server;
-\item "updatefile": tabella che rappresenta i file di aggiornamento 
+Ogni record in questa tabella rappresenta un singolo server da aggiornare;
+\item updatefile: tabella che rappresenta i file di aggiornamento 
 effettivi che verranno installati sui server selezionati. 
 Anche questa tabella è correlata alla tabella "campaign" tramite una 
 relazione uno-a-molti e contiene un record per ogni diverso sistema 
 operativo dei server selezionati in una campagna di aggiornamento;
-\item "updatejob": tabella che contiene le informazioni sulle sessioni 
+\item updatejob: tabella che contiene le informazioni sulle sessioni 
 di aggiornamento avviate su un server. Ogni record in questa tabella 
 rappresenta un'operazione di aggiornamento. È possibile avere più operazioni 
-di aggiornamento per un singolo server, nel caso si voglia ripetere 
+di aggiornamento per un singolo server, per consentire di ripetere 
 l’aggiornamento in caso di fallimento;
-\item "updatejobstatushistory": tabella che tiene traccia dello stato di 
+\item updatejobstatushistory: tabella che tiene traccia dello stato di 
 avanzamento dell’operazione di aggiornamento. Questa tabella è utilizzata 
 per tenere traccia degli stati di ogni singola operazione di aggiornamento 
 presente nella tabella.
@@ -42,8 +41,8 @@ presente nella tabella.
   \begin{flushright}
     \centering
     \includegraphics[width=0.90\textwidth]{imgs/ER_schema.png}
-    \caption{Schema entità-relazione database}
-    \label{fig:Schema entità-relazione database}
+    \caption{Schema entità-relazione database relazionale}
+    \label{fig:Schema entità-relazione database relazionale}
   \end{flushright}
 \end{figure}
 
@@ -90,7 +89,7 @@ utente che l’ha caricato.
 \item id\_ticket: l'ID del ticket associato alla campagna;
 \item start\_at: la data e l'ora di inizio della campagna;
 \item end\_at: la data e l'ora di fine della campagna;
-\item idrs: l’id del cliente a cui è associata la campagna;
+\item idrs: l’ID del cliente a cui è associata la campagna;
 \item created\_by: l'utente che ha creato la campagna;
 \item algorithm\_started\_at: la data e l'ora di inizio dell'algoritmo di elaborazione;
 \item algorithm\_scheduling\_note: una nota di pianificazione dell'algoritmo di elaborazione;
@@ -116,26 +115,26 @@ utente che l’ha caricato.
 \textbf{UpdateFile:}
 \begin{itemize}
 \item id: l'ID del file.
-\item campaign\_id: l'ID della campagna associata all'aggiornamento.
-\item os\_name: il codice del sistema operativo associato all'aggiornamento.
-\item kb\_code: il codice univoco dell'aggiornamento di sicurezza.
-\item execute\_params: i parametri di esecuzione dell'eseguibile di aggiornamento.
-\item path: l'url del percorso in cui è stato caricato il file di aggiornamento, caricato su S3.
-\item updated\_by: l'utente che ha caricato il file di aggiornamento.
-\item s3\_version: la versione di S3 del file di aggiornamento.
-\item created\_at: la data e l'ora di creazione del file.
+\item campaign\_id: l'ID della campagna associata all'aggiornamento;
+\item os\_name: il codice del sistema operativo associato all'aggiornamento;
+\item kb\_code: il codice univoco dell'aggiornamento di sicurezza;
+\item execute\_params: i parametri di esecuzione dell'eseguibile di aggiornamento;
+\item path: l'url del percorso in cui è stato caricato il file di aggiornamento, caricato su S3;
+\item updated\_by: l'utente che ha caricato il file di aggiornamento;
+\item s3\_version: la versione di S3 del file di aggiornamento;
+\item created\_at: la data e l'ora di creazione del file;
 \item updated\_at: la data e l'ora di ultima modifica del file.
 \end{itemize}
 
 \textbf{UpdateJob:}
 \begin{itemize}
-\item id: campo UUID che rappresenta la chiave univoca della sessione di aggiornamento.
-\item item\_id: l'ID che si riferisce al modello Item e specifica l'elemento di cui viene effettuato l'aggiornamento.
-\item provision\_id: contiene l'ID del gestore dei task schedulati remoti, utilizzato per far partire l'aggiornamento da remoto.
-\item token\_sha256: contiene il valore SHA256 del token utilizzato per inviare aggiornamenti di stato da remoto.
-\item ticket\_id: campo che può contenere l'ID del ticket che viene aperto in caso di problemi di aggiornamento automatico.
-\item check\_status: campo che contiene lo stato di tutti i controlli di monitoraggio, prima di avviare l'aggiornamento.
-\item silencer\_id: l'ID del downtime associato al server per evitare segnalazioni dovute al riavvio della macchina durante l'aggiornamento.
+\item id: campo UUID che rappresenta la chiave univoca della sessione di aggiornamento;
+\item item\_id: l'ID che si riferisce al modello Item e specifica l'elemento di cui viene effettuato l'aggiornamento;
+\item provision\_id: contiene l'ID del gestore dei task schedulati remoti, utilizzato per far partire l'aggiornamento da remoto;
+\item token\_sha256: contiene il valore SHA256 del token utilizzato per inviare aggiornamenti di stato da remoto;
+\item ticket\_id: campo che può contenere l'ID del ticket che viene aperto in caso di problemi di aggiornamento automatico;
+\item check\_status: campo che contiene lo stato di tutti i controlli di monitoraggio, prima di avviare l'aggiornamento;
+\item silencer\_id: l'ID del downtime associato al server per evitare segnalazioni dovute al riavvio della macchina durante l'aggiornamento;
 \item created\_at: la data e l'ora dell'avvio dell'aggiornamento.
 \end{itemize}
 
