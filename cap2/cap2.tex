@@ -137,11 +137,10 @@ dovrà essere in grado di trovare una schedulazione ottimale in base ai
 seguenti parametri:
 \begin{itemize}
 \item fascia di manutenzione corretta;
-\item dipendenze tra server. Questi server devono essere i primi a essere 
-schedulati a distanza di 24 ore;
+\item dipendenze tra server;
 \item schedulare in modo da non avere due server con lo stesso 
 “gruppo di patch” nello stesso slot;
-\item schedulare in modo da avere massimo 3 server per slot, preferendo 
+\item schedulare in modo da avere massimo di server per slot, preferendo 
 sempre slot vuoti. In una situazione ideale si schedula solo 1 server per slot.
 \end{itemize}
 L’algoritmo di schedulazione dovrà essere eseguito appena l’operatore, tramite 
