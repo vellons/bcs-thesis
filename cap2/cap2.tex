@@ -54,7 +54,7 @@ Una campagna di aggiornamento è un insieme di server, con diverso sistema
 operativo, che devono essere aggiornati, entro un periodo che va tra due e 
 quattro settimane. 
 
-Per creare una campagna occorre decidere:
+\noindent Per creare una campagna occorre decidere:
 \begin{itemize}
 \item data e ora di inizio campagna;
 \item data e ora di fine campagna;
@@ -80,7 +80,7 @@ per ogni sistema operativo selezionato, si dovrà caricare la patch di sicurezza
 da installare sui server.
 \end{itemize}
 
-Per ogni server da aggiornare bisogna recuperare, tramite le API del gestionale 
+\noindent Per ogni server da aggiornare bisogna recuperare, tramite le API del gestionale 
 esterno, le seguenti proprietà:
 \begin{itemize}
 \item nome;
@@ -116,7 +116,7 @@ WinRM e SSH verranno utilizzati attraverso Ansible per l’esecuzione di task
 remoti. Il funzionamento di Ansible verrà approfondito a 
 pagina ~\pageref{subsec:Ansible}.
 
-Le campagne possono avere due tipologie:
+\noindent Le campagne possono avere due tipologie:
 \begin{itemize}
 \item standard: in cui vengono rispettate le fasce di manutenzione impostare 
 per ogni server;
@@ -176,7 +176,7 @@ le pianificazione di attività ripetute in un momento specifico.
 La gestione automatica degli aggiornamenti sarà quindi gestita con 
 dei task programmati che faranno partire l’aggiornamento sul server remoto.\\
 
-Saranno presenti due cron job:
+\noindent Saranno presenti due cron job:
 \begin{itemize}
 \item job di avvio, schedulato ogni 30 minuti. Questo job seleziona tutte 
 le campagne attive e farà partire gli aggiornamenti per i server schedulati 
@@ -208,7 +208,7 @@ storage centrale e far partire l’aggiornamento sul server.
 Per avere un maggiore controllo sullo stato di avanzamento lo script 
 comunicherà gli stati intermedi durante l’operazione.\\
 
-Gli stati che si susseguiranno durante l’operazione saranno:
+\noindent Gli stati che si susseguiranno durante l’operazione saranno:
 \begin{itemize}
 \item ping: test connessione all’avvio dello script; 
 \item download patch: scaricamento dell’aggiornamento sul server;
@@ -225,7 +225,7 @@ mostra il diagramma degli stati dell'aggiornamento.
 La figura ~\ref{fig:Diagramma delle attività per la creazione di una campagna} 
 rappresenta il diagramma delle attività per la creazione di una campagna di Hotfix.\\
 
-Le entità coinvolte nella creazione sono:
+\noindent Le entità coinvolte nella creazione sono:
 \begin{itemize}
 \item NIST (National Institute of Standards and Technology);
 \item Il vendor del sistema operativo cioè colui che ha creato e gestisce il 

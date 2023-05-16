@@ -8,7 +8,7 @@ contenesse diverse tabelle. La creazione delle tabelle è gestita
 tramite Django, un framework Python molto conosciuto nello sviluppo di 
 applicativi backend, verrà dettagliato in seguito.\\
 
-Il database relazionale comprende quindi diverse tabelle, tra cui:
+\noindent Il database relazionale comprende quindi diverse tabelle, tra cui:
 \begin{itemize}
 \item campaign: la tabella principale del database, che rappresenta una 
 campagna di aggiornamento. Ogni record in questa tabella contiene 
@@ -75,7 +75,7 @@ utente che l’ha caricato.
 
 \subsection{Definizioni delle tabelle}
 
-\textbf{Campaign:}
+\noindent \textbf{Campaign:}
 \begin{itemize}
 \item id: l'ID univoco della campagna;
 \item name: il nome associato alla campagna;
@@ -93,7 +93,7 @@ utente che l’ha caricato.
 \item updated\_at: la data e l'ora di ultima modifica della campagna.\\
 \end{itemize}
 
-\textbf{Item:}
+\noindent \textbf{Item:}
 \begin{itemize}
 \item id: l'ID univoco dell’item;
 \item campaign\_id: l’ID della campagna associata all'elemento;
@@ -108,7 +108,7 @@ utente che l’ha caricato.
 \item approved\_by: l'utente che ha approvato l'elemento.
 \end{itemize}
 
-\textbf{UpdateFile:}
+\noindent \textbf{UpdateFile:}
 \begin{itemize}
 \item id: l'ID del file.
 \item campaign\_id: l'ID della campagna associata all'aggiornamento;
@@ -122,7 +122,7 @@ utente che l’ha caricato.
 \item updated\_at: la data e l'ora di ultima modifica del file.
 \end{itemize}
 
-\textbf{UpdateJob:}
+\noindent \textbf{UpdateJob:}
 \begin{itemize}
 \item id: campo UUID che rappresenta la chiave univoca della sessione di aggiornamento;
 \item item\_id: l'ID che si riferisce al modello Item e specifica l'elemento di cui viene effettuato l'aggiornamento;
@@ -134,7 +134,7 @@ utente che l’ha caricato.
 \item created\_at: la data e l'ora dell'avvio dell'aggiornamento.
 \end{itemize}
 
-\textbf{UpdateJobStatusHistory:}
+\noindent \textbf{UpdateJobStatusHistory:}
 \begin{itemize}
 \item update\_job\_id:  l'ID della sessione di aggiornamento;
 \item status: specifica lo stato dell'aggiornamento. I possibili valori sono: “Ready”, 
@@ -166,7 +166,7 @@ chiamate “pod”. Un pod è il più piccolo oggetto di gestione in Kubernetes 
 rappresenta un singolo insieme di uno o più container, con uno spazio di 
 archiviazione e una rete condivisa.\\
 
-Le principali caratteristiche di  Kubernetes sono:
+\noindent Le principali caratteristiche di  Kubernetes sono:
 \begin{itemize}
 \item Orchestrazione: coordina e distribuisce i container su un cluster di macchine (insieme di server). Gestisce automaticamente il posizionamento dei container, il bilanciamento del carico, la scalabilità e il ripristino in caso di errori;
 \item Autoscaling: supporta l'autoscaling automatico in base al carico dell'applicazione. Può aumentare o diminuire il numero di repliche dei container in base alle metriche definite, assicurando che l'applicazione abbia sempre le risorse necessarie per funzionare correttamente;
@@ -178,7 +178,7 @@ Le risorse dell’Hotfix Response Center sono tutte state inserite in un namespa
 dedicato (una sorta di contenitore virtuale) in modo da poter coesistere con 
 altri microservizi all'interno del cluster.\\
 
-All’interno del namespace dedicato sono presenti le seguenti risorse:
+\noindent All’interno del namespace dedicato sono presenti le seguenti risorse:
 \begin{itemize}
 \item Deployment frontend: esegue un pod con il web server nginx che mette a disposizione i file statici del front-end, relativo al pannello di amministrazione;
 \item Deployment backend: esegue tre pod che consentono l’esecuzione del backend in Django;

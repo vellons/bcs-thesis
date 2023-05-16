@@ -19,7 +19,7 @@ stesso slot dovrà però avvenire solamente nel caso non ci siano altri slot
 liberi, preferendo sempre slot vuoti. In una situazione ideale si schedula 
 solo 1 server per slot, questo per garantire uniformità nel calendario.\\
 
-\textbf{Dati in ingresso nell'algoritmo:} data e ora di inizio e fine campagna, elenco dei 
+\noindent \textbf{Dati in ingresso nell'algoritmo:} data e ora di inizio e fine campagna, elenco dei 
 server da schedulare dove per ogni server sono presenti:
 \begin{itemize}
 \item atlantis\_id: id del gestionale dal quale provengono le informazioni del server;
@@ -30,7 +30,7 @@ essere schedulati insieme;
 schedulati a distanza di 24 ore.
 \end{itemize}
 
-\textbf{Dati in uscita dall'algoritmo:} schedulazione per ogni server in modo da poterli 
+\noindent \textbf{Dati in uscita dall'algoritmo:} schedulazione per ogni server in modo da poterli 
 aggiornare il prima possibile.
 
 
@@ -83,7 +83,7 @@ Per poter interpretare correttamente la stringa e capire durante la settimana in
 slot di 30 minuti può essere inserito il server è stata creata una classe 
 Python capace di comprendere il significato della stringa.\\
 
-Le funzionalità principali della classe sono:
+\noindent Le funzionalità principali della classe sono:
 \begin{itemize}
 \item Interpretare la stringa della fascia di manutenzione;
 \item Gestire una struttura dati per memorizzare in quali slot durante la 
@@ -99,14 +99,13 @@ La struttura dati per memorizzare la disponibilità degli slot si basa su un
 dizionario in cui la chiave del dizionario è la rappresentazione a stringa 
 dell’inizio dello slot in secondi.
 
-\textbf{Esempio:}\\
+\noindent \textbf{Esempio:}\\
 Chiave 0 = primo slot, lunedì mattina alle ore 00:00\\
 Chiave 1800 = secondo slot, lunedì mattina alle ore 00:30\\
 Chiave 86400 = slot del martedì alle ore 00:00\\
 
 Questi valori sono ottenuti impostando la costante RESOLUTION\_IN\_MINUTE = 30. 
 Quindi durante la settimana, nel dizionario, saranno presenti 336 slot da 30 minuti.
-
 Dopo aver inizializzato la struttura dati, per salvare le disponibilità negli 
 slot, inizia l’interpretazione della stringa della fascia di manutenzione.\\
 
