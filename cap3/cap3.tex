@@ -1,8 +1,3 @@
-%%%%%%%%%% CAPITOLO DI TESI %%%%%%%%%%
-%
-% Capitolo "3" Capitolo 3
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mcchap{Progettazione}{cap:cap3}
 \section{Entità ed associazioni}
 Nella fase di progettazione concettuale del tool, uno dei principali
@@ -21,7 +16,7 @@ informazioni sulle specifiche della campagna;
 \item item: tabella che contiene l'insieme dei server che devono essere 
 aggiornati, correlati alla campagna tramite una relazione uno-a-molti. 
 Ogni record in questa tabella rappresenta un singolo server da aggiornare;
-\item updatefile: tabella che rappresenta i file di aggiornamento 
+\item updatefile: tabella che contiene le informazioni sui file di aggiornamento 
 effettivi che verranno installati sui server selezionati. 
 Anche questa tabella è correlata alla tabella "campaign" tramite una 
 relazione uno-a-molti e contiene un record per ogni diverso sistema 
@@ -31,8 +26,7 @@ di aggiornamento avviate su un server. Ogni record in questa tabella
 rappresenta un'operazione di aggiornamento. È possibile avere più operazioni 
 di aggiornamento per un singolo server, per consentire di ripetere 
 l’aggiornamento in caso di fallimento;
-\item updatejobstatushistory: tabella che tiene traccia dello stato di 
-avanzamento dell’operazione di aggiornamento. Questa tabella è utilizzata 
+\item updatejobstatushistory: tabella che tiene traccia dello stato d'avanzamento dell’operazione di aggiornamento. Questa tabella è utilizzata 
 per tenere traccia degli stati di ogni singola operazione di aggiornamento 
 presente nella tabella.
 \end{itemize}
@@ -40,14 +34,14 @@ presente nella tabella.
 \begin{figure}[H]
   \begin{flushright}
     \centering
-    \includegraphics[width=0.90\textwidth]{imgs/ER_schema.png}
+    \includegraphics[width=0.95\textwidth]{imgs/ER_schema.png}
     \caption{Schema entità-relazione del database relazionale}
     \label{fig:Schema entità-relazione del database relazionale}
   \end{flushright}
 \end{figure}
 
-Come mostra la figura ~\ref{fig:Schema entità-relazione del database relazionale} 
-dello schema ER, le tabelle del database sono state 
+Come mostra lo schema ER della figura
+~\ref{fig:Schema entità-relazione del database relazionale}, le tabelle del database sono state 
 progettate in modo da riflettere le relazioni tra le entità coinvolte 
 nel sistema.
 
@@ -57,17 +51,17 @@ corrisponde un insieme di server che devono essere aggiornati.
 
 La tabella "updatefile" è sempre correlata alla tabella "campaign" 
 attraverso una relazione uno-a-molti, in quanto ad ogni campagna di 
-aggiornamento corrisponde un insieme di file di aggiornamento che 
+aggiornamento corrisponde un insieme di file che 
 devono essere installati sui server selezionati.
 
 La tabella "updatejob" è correlata alla tabella "item" in quanto ogni 
 operazione di aggiornamento è associata ad un singolo server.
 
-La tabella "updatefile" è associata alla tabella “campaign”, sempre 
+La tabella “updatefile” è associata alla tabella “campaign”, sempre 
 attraverso relazioni uno-a-molti, perché in base al sistema operativo 
 ogni server della campagna avrà il suo file di aggiornamento. 
 
-Infine, la tabella "updatejobstatushistory" è correlata alla tabella 
+La tabella "updatejobstatushistory" è correlata alla tabella 
 "updatejob" tramite una relazione uno-a-molti, in quanto ad ogni 
 operazione di aggiornamento corrisponde un insieme di stati di 
 avanzamento dell'operazione.
@@ -156,33 +150,34 @@ per eseguire un'applicazione, compresi il codice, le dipendenze e le librerie.
 \subsection{kubernetes}
 La gestione dei container è affidata a Kubernetes, un sistema open-source per 
 l'orchestrazione dei container. È progettato per automatizzare la distribuzione, 
-la scalabilità e la gestione delle applicazioni containerizzate.\\
+la scalabilità e la gestione delle applicazioni containerizzate.
 
 Kubernetes fornisce un'infrastruttura per coordinare e gestire il deployment 
 dei container in modo efficiente. Si può definire come le applicazioni dovrebbero 
 essere eseguite, specificando requisiti di risorse, definendo relazioni tra i 
 componenti e gestendo le dipendenze.
+
 Su Kubernetes, i container sono organizzati e gestiti all'interno di unità 
-chiamate "pod". Un pod è il più piccolo oggetto di gestione in Kubernetes e 
+chiamate “pod”. Un pod è il più piccolo oggetto di gestione in Kubernetes e 
 rappresenta un singolo insieme di uno o più container, con uno spazio di 
 archiviazione e una rete condivisa.\\
 
 Le principali caratteristiche di  Kubernetes sono:
 \begin{itemize}
-\item Orchestrazione: coordina e distribuisce i container su un cluster di macchine. Gestisce automaticamente il posizionamento dei container, il bilanciamento del carico, la scalabilità e il ripristino in caso di errori;
+\item Orchestrazione: coordina e distribuisce i container su un cluster di macchine (insieme di server). Gestisce automaticamente il posizionamento dei container, il bilanciamento del carico, la scalabilità e il ripristino in caso di errori;
 \item Autoscaling: supporta l'autoscaling automatico in base al carico dell'applicazione. Può aumentare o diminuire il numero di repliche dei container in base alle metriche definite, assicurando che l'applicazione abbia sempre le risorse necessarie per funzionare correttamente;
 \item Gestione delle risorse: consente di definire i requisiti di risorse per i container, come CPU e memoria, e li alloca in modo appropriato all'interno del cluster. Ciò garantisce che le risorse siano utilizzate in modo efficiente e che le applicazioni non interferiscano tra loro;
-\item Rolling updates e rollback: Kubernetes facilita gli aggiornamenti delle applicazioni senza interruzioni. Puoi eseguire aggiornamenti dei container in modo graduale e controllato, monitorando lo stato e, se necessario, effettuando il rollback a una versione precedente.
+\item Rolling updates e rollback: facilita gli aggiornamenti delle applicazioni senza interruzioni. Si possono eseguire aggiornamenti dei container in modo graduale e controllato, monitorando lo stato e, se necessario, effettuando il rollback a una versione precedente.
 \end{itemize}
 
 Le risorse dell’Hotfix Response Center sono tutte state inserite in un namespace 
 dedicato (una sorta di contenitore virtuale) in modo da poter coesistere con 
 altri microservizi all'interno del cluster.\\
 
-All’interno del namespace sono presenti le seguenti risorse:
+All’interno del namespace dedicato sono presenti le seguenti risorse:
 \begin{itemize}
 \item Deployment frontend: esegue un pod con il web server nginx che mette a disposizione i file statici del front-end, relativo al pannello di amministrazione;
-\item Deployment backend: esegue tre pod per consentono l’esecuzione del backend in Django;
+\item Deployment backend: esegue tre pod che consentono l’esecuzione del backend in Django;
 \item Cronjob di avvio: schedulato ogni 30 minuti. Questo job seleziona tutte le campagne attive e fa partire gli aggiornamenti per i server schedulati in quello slot temporale;
 \item Cronjob di monitoraggio: schedulato ogni 10 minuti. Questo job monitora gli aggiornamenti in corso. Deve controllare che gli aggiornamenti automatici procedano senza problemi rilevando se si verificano dei timeout.
 \end{itemize}
@@ -199,13 +194,16 @@ mostra uno schema rappresentativo dell’architettura.
   \end{flushright}
 \end{figure}
 
+Il rettangolo azzurro rappresenta il namasepace dedicato all'interno del cluster.
+Il backend contatta anche altri microservizi, presenti in altri namespace, dello stesso cluster.
+Ad esempio contatta le API del gestionale per recuperare le informazioni dei server da aggiornare.
 
 \label{subsec:Ansible}
 \subsection{Ansible}
 Un altro componente importante dell’architettura è Ansible, una piattaforma 
 open-source per l'automazione IT. Ansible viene utilizzato per semplificare 
-la gestione e l'automazione di sistemi IT complessi. Ansible utilizza un 
-linguaggio di automazione semplice basato su YAML chiamato "Playbook" per 
+la gestione e l'automazione di sistemi IT complessi, utilizzando un 
+linguaggio semplice basato su YAML chiamato “Playbook” per 
 definire le azioni da eseguire sui nodi di destinazione.\\
 
 Ansible viene utilizzato per connettersi da remoto ai server dei clienti per 

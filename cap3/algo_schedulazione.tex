@@ -1,8 +1,3 @@
-%%%%%%%%%% CAPITOLO DI TESI %%%%%%%%%%
-%
-% Capitolo "3" algoritmo di schedulazione
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Algoritmo di schedulazione}
 L’Hotfix Response Center è un tool che verrà utilizzato in momenti 
 critici, per aggiornare da remoto centinaia di server vulnerabili, 
@@ -11,7 +6,7 @@ in modo automatico.
 Ricopre quindi un ruolo molto importante l’algoritmo di schedulazione. 
 L’algoritmo dovrà essere in grado di trovare una schedulazione 
 ottimale per aggiornare i server tenendo conto, durante l'elaborazione, 
-di numerosi fattori, dettagliati in seguito. L’affidabilità e la 
+di numerosi fattori. L’affidabilità e la 
 precisione dell’algoritmo sarà fondamentale per poter garantire che 
 tutto avvenga in modo automatico e nelle corrette tempistiche.\\
 
@@ -20,11 +15,11 @@ di 2/3 settimane. Ogni giorno della settimana verrà suddiviso in 48
 slot da 30 minuti. Per ogni slot di tempo sarà possibile aggiornare 
 massimo 5 server contemporaneamente. Questo rende possibile aggiornare 
 fino a 240 server al giorno. La scelta di posizionare più server nello 
-stesso slot dovrà avvenire solamente nel caso non ci siano altri slot 
+stesso slot dovrà però avvenire solamente nel caso non ci siano altri slot 
 liberi, preferendo sempre slot vuoti. In una situazione ideale si schedula 
 solo 1 server per slot, questo per garantire uniformità nel calendario.\\
 
-\textbf{Dati in input:} data e ora di inizio e fine campagna, elenco dei 
+\textbf{Dati in ingresso nell'algoritmo:} data e ora di inizio e fine campagna, elenco dei 
 server da schedulare dove per ogni server sono presenti:
 \begin{itemize}
 \item atlantis\_id: id del gestionale dal quale provengono le informazioni del server;
@@ -35,7 +30,7 @@ essere schedulati insieme;
 schedulati a distanza di 24 ore.
 \end{itemize}
 
-\textbf{Dati in output:} schedulazione per ogni server in modo da poterli 
+\textbf{Dati in uscita dall'algoritmo:} schedulazione per ogni server in modo da poterli 
 aggiornare il prima possibile.
 
 
@@ -86,7 +81,7 @@ LUN-MAR-MER(20:00-24:00)+LUN-MAR-MER(00:00-05:00)+SAB-DOM(00:00-24:00)\\
 
 Per poter interpretare correttamente la stringa e capire durante la settimana in quali 
 slot di 30 minuti può essere inserito il server è stata creata una classe 
-Python capace di comprendere il significato della stringa.
+Python capace di comprendere il significato della stringa.\\
 
 Le funzionalità principali della classe sono:
 \begin{itemize}
@@ -145,7 +140,7 @@ negli slot lasciati liberi dai server con score più basso.\\
 
 
 Di seguito è riportato il metodo get\_num\_of\_seconds\_of\_available\_slot della 
-classe MaintenanceWindowParser:
+classe MaintenanceWindowParser che restituisce l'availability score della fascia di manutenzione:
 
 \lstinputlisting[style=custompython, language=Python]{code/get_num_of_seconds_of_available_slot.py}
 
@@ -175,7 +170,7 @@ Questo valore è la somma tra l’availability score e il grado che
 ha il server all'interno dell’albero delle dipendenze, se i server non 
 hanno dipendenze avranno grado 0.
 
-Poi si ordinano i server per priority score crescente (riga 7).
+Poi si ordinano i server per priority score crescente (riga 7 del codice sottostante).
 Successivamente, nel ciclo for di riga 14, si scorrono tutti i server 
 da schedulare presenti nella campagna.
 Per ogni server si estrae la lista di tutti gli slot per cui provare 
@@ -218,28 +213,28 @@ problema per input di dimensioni moderate, poiché la lista dei server e
 il calendario non dovrebbero essere eccessivamente grandi. Quindi la 
 complessità in spazio dell'algoritmo è O(N).\\
 
-L’algoritmo di schedulazione ha un comportamento computazionale in 
-tempo lineare. Il caso peggiore non si verifica quando ci sono tanti 
+Il caso peggiore non si verifica quando ci sono tanti 
 server da schedulare ma quando ci sono molti server con una fascia di 
 manutenzione molto ristretta, che quindi andrebbero tutti schedulati in 
 pochi slot. Questo farebbe riempire gli slot di una particolare fascia di 
 manutenzione o di un gruppo di slot. A quel punto i server si ritroveranno, 
 al termine dell’esecuzione dell’algoritmo, senza uno slot assegnato. 
 In questo caso l’utilizzatore del tool dovrà inserire manualmente uno slot, 
-attraverso l’interfaccia, prima di avviare la campagna.\\
+attraverso il pannello d'amministrazione web, prima di avviare la campagna.\\
 
 Per evitare di incorrere in troppi server senza schedulazione si è deciso di 
 fissare il limite massimo di 2000 server per singola campagna di aggiornamento.
 
 
 \subsection{Tempi di esecuzione}
-L’algoritmo di schedulazione viene eseguito quando l’utente, attraverso 
-l’interfaccia grafica dell’Hotfix Response Center, seleziona i server da 
-aggiornare. A quel punto si hanno a disposizione pochi secondi per salvare 
+L’algoritmo di schedulazione viene eseguito quando l'operatore, attraverso 
+l’interfaccia grafica del pannello d'amministrazione dell’Hotfix Response Center, 
+seleziona i server da aggiornare. 
+A quel punto si hanno a disposizione pochi secondi per salvare 
 l’elenco dei server a database, recuperare le informazioni per la schedulazione 
 ed eseguire l’algoritmo.
 Tutte queste operazioni sono eseguite da un servizio REST, sviluppato in Django, 
-presente nel Backend.
+presente nel Backend, che esegue l'algoritmo in Python.
 
 Il tempo di risposta del servizio e quindi il tempo di attesa dell’utente è 
 la somma di: tempo di salvataggio a database di un record di tipo Item per 
@@ -247,16 +242,16 @@ ogni server della campagna, tempo di recupero delle informazioni necessarie
 alla schedulazione (fascia di manutenzione e altri parametri) tramite le API 
 dei microservizi del gestionale, tempo di esecuzione dell'algoritmo di 
 schedulazione, tempo di salvataggio a database delle schedulazioni di ogni 
-server e tempo di invio della risposta al client.
+server e tempo d'invio della risposta al client.
 
 La Tabella ~\ref{tab:algo-exec} mostra i tempi, in secondi, di esecuzione 
 dell'algoritmo di schedulazione per diversi quantitativi di server. Come si 
 può vedere, il tempo di schedulazione varia a seconda del numero di server 
 coinvolti nella campagna. Il tempo di recupero delle informazioni necessarie 
-alla schedulazione e il tempo di esecuzione dell'algoritmo sono i principali 
-fattori che contribuiscono alla durata totale dell'operazione. In particolare, 
+alla schedulazione è il principale fattore che contribuisce alla durata 
+totale dell'operazione. In particolare, 
 il recupero delle informazioni richiede più tempo per i numeri di server più 
-elevati, mentre il tempo di esecuzione dell'algoritmo è relativamente costante. 
+elevati, mentre il tempo di esecuzione dell'algoritmo è lineare. 
 In generale, il servizio REST in Django presente nel Backend riesce a gestire 
 l'operazione in pochi secondi, garantendo un'esperienza utente fluida.\\
 
@@ -278,9 +273,13 @@ l'operazione in pochi secondi, garantendo un'esperienza utente fluida.\\
 \end{tabular} 
 \caption {Tempo esecuzione dell'algoritmo}
 \label{tab:algo-exec}
-La colonna "Schedulazione" e "Recupero info" hanno i secondi come unità di misura.
+La colonna “Schedulazione” e “Recupero info” hanno i secondi come unità di misura.
 \end{center}
 \end{table}
+
+Il tempo relativo alla schedulazione comprende anche il tempo necessario 
+alla creazione delle classi e delle strutture di memorizzazione 
+necessarie per eseguire l'algoritmo stesso.
 
 
 La colonna “con dipendenze” mostra, per la relativa campagna di test, quanti 
