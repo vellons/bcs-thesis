@@ -89,7 +89,7 @@ utente che l’ha caricato.
 \item algorithm\_started\_at: la data e l'ora di inizio dell'algoritmo di elaborazione;
 \item algorithm\_scheduling\_note: una nota di pianificazione dell'algoritmo di elaborazione;
 \item created\_at: la data e l'ora di creazione della campagna;
-\item updated\_at: la data e l'ora di ultima modifica della campagna.
+\item updated\_at: la data e l'ora di ultima modifica della campagna.\\
 \end{itemize}
 
 \textbf{Item:}
@@ -114,7 +114,7 @@ utente che l’ha caricato.
 \item os\_name: il codice del sistema operativo associato all'aggiornamento;
 \item kb\_code: il codice univoco dell'aggiornamento di sicurezza;
 \item execute\_params: i parametri di esecuzione dell'eseguibile di aggiornamento;
-\item path: l'url del percorso in cui è stato caricato il file di aggiornamento, caricato su S3;
+\item path: l'url del percorso del bucket su cui è stato caricato il file di aggiornamento;
 \item updated\_by: l'utente che ha caricato il file di aggiornamento;
 \item s3\_version: la versione di S3 del file di aggiornamento;
 \item created\_at: la data e l'ora di creazione del file;
@@ -188,7 +188,7 @@ mostra uno schema rappresentativo dell’architettura.
 \begin{figure}[H]
   \begin{flushright}
     \centering
-    \includegraphics[width=0.90\textwidth]{imgs/architecture_design.pdf}
+    \includegraphics[width=0.95\textwidth]{imgs/architecture_design.pdf}
     \caption{Design architettura}
     \label{fig:Design architettura}
   \end{flushright}

@@ -1,6 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Universita' degli Studi dell'Insubria
+% Università degli Studi dell'Insubria
+% Tesi di Laurea triennale in Informatica
+% Alex Vellone
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -101,6 +103,8 @@
 \titleformat{\section}[hang]{\sffamily\bfseries}
  {\Large\thesection}{12pt}{\Large}[{\titlerule[0.4pt]}]
 
+ \linespread{1.1}
+
 %% Gestisce la grafica a seconda che si usi latex o pdflatex
 \newif\ifpdf
 \ifx\pdfoutput\undefined
@@ -111,6 +115,7 @@
 \fi
 %
 \ifpdf
+
 \usepackage[pdftex]{floatflt,graphicx}
 \DeclareGraphicsExtensions{.pdf,.mps,.png,.jpg}
 \usepackage[pdftex]{hyperref}
@@ -126,6 +131,7 @@
 
 %%tabella con linee colorate
 \usepackage{colortbl}
+
 
 %%%%%%%%%%%%% NUOVI COMANDI E IMPOSTAZIONI %%%%%%%%%%%
 \newenvironment{mcquote}
@@ -148,6 +154,17 @@
   \if@twocolumn\hbox{}\newpage\fi\fi\fi}
 \makeatother
 
+%% Link colorati e non riquadrati
+%\hypersetup{
+%    colorlinks,
+%    linkcolor={red!50!black},
+%    citecolor={blue!50!black},
+%    urlcolor={blue!80!black}
+%}
+
+%% Link non colorati e non riquadrati
+\hypersetup{hidelinks}
+
 \newcommand{\codice}[1]{\protect\texttt{\small{#1}}}
 
 \newcommand{\mcproc}[1]{\ensuremath{\mbox{\sc #1}}}
@@ -162,10 +179,6 @@
   \begin{tabular}{|p{13cm}} \underline{NOTA:} \small{#1} \end{tabular}}
 }
 
-\makeindex
-\linespread{1.1}
-\floatname{algorithm}{Algoritmo}
-\renewcommand{\listalgorithmname}{Elenco degli algiritmi}
 
 %%%%%%%%%%%%%%%% METADATI DOCUMENTO %%%%%%%%%%%%%%%%%%
 \date{}
@@ -211,7 +224,7 @@
   \fancyhead[RE]{\bfseries\leftmark} 
   \renewcommand{\headrulewidth}{0.8pt} 
   \renewcommand{\footrulewidth}{0pt} 
-  %\renewcommand{\headheight}{13.59999pt}
+  \setlength{\headheight}{13.59999pt}
   \addtolength{\headheight}{0.5pt} % make space for the rule 
   \fancypagestyle{plain}{
     \fancyhead{} % get rid of headers on plain pages
@@ -225,10 +238,11 @@
   \include{cap2/cap2}
   \include{cap3/cap3}
   \include{cap3/algo_schedulazione}
-  \include{appendici/appendici}
+  \include{cap4/cap4}
+  \include{cap5/cap5}
 
   \appendix
-  \include{colophon/colophon}
+  \include{ringraziamenti/ringraziamenti}
   
   \backmatter{}
 
