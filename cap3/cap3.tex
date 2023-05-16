@@ -41,12 +41,12 @@ presente nella tabella.
   \begin{flushright}
     \centering
     \includegraphics[width=0.90\textwidth]{imgs/ER_schema.png}
-    \caption{Schema entità-relazione database relazionale}
-    \label{fig:Schema entità-relazione database relazionale}
+    \caption{Schema entità-relazione del database relazionale}
+    \label{fig:Schema entità-relazione del database relazionale}
   \end{flushright}
 \end{figure}
 
-Come mostra la figura ~\ref{fig:Schema entità-relazione database relazionale} 
+Come mostra la figura ~\ref{fig:Schema entità-relazione del database relazionale} 
 dello schema ER, le tabelle del database sono state 
 progettate in modo da riflettere le relazioni tra le entità coinvolte 
 nel sistema.
@@ -200,6 +200,7 @@ mostra uno schema rappresentativo dell’architettura.
 \end{figure}
 
 
+\label{subsec:Ansible}
 \subsection{Ansible}
 Un altro componente importante dell’architettura è Ansible, una piattaforma 
 open-source per l'automazione IT. Ansible viene utilizzato per semplificare 
@@ -215,14 +216,15 @@ Questo eseguibile si occuperà dell'aggiornamento remoto del server.
 L’eseguibile, in modo autonomo, si preoccuperà di scaricare dallo storage 
 S3 il file di aggiornamento e di installarlo sul server. 
 Ad ogni passo d’esecuzione l’eseguibile comunica al backend dell’Hotfix Response Center, 
-tramite le API, i passi dell’aggiornamento, seguendo lo schema di figura ~\ref{fig:Stati di aggiornamento}.
+tramite le API, i passi dell’aggiornamento, seguendo lo schema di 
+figura ~\ref{fig:Diagramma a stati dell'aggiornamento di un server}.
 
  \begin{figure}[H]
   \begin{flushright}
     \centering
     \includegraphics[width=0.90\textwidth]{imgs/update_statues.png}
-    \caption{Stati di aggiornamento}
-    \label{fig:Stati di aggiornamento}
+    \caption{Diagramma a stati dell'aggiornamento di un server}
+    \label{fig:Diagramma a stati dell'aggiornamento di un server}
   \end{flushright}
 \end{figure}
 
