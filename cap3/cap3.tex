@@ -18,7 +18,7 @@ aggiornati, correlati alla campagna tramite una relazione uno-a-molti.
 Ogni record in questa tabella rappresenta un singolo server da aggiornare;
 \item updatefile: tabella che contiene le informazioni sui file di aggiornamento 
 effettivi che verranno installati sui server selezionati. 
-Anche questa tabella è correlata alla tabella "campaign" tramite una 
+Anche questa tabella è correlata alla tabella “campaign” tramite una 
 relazione uno-a-molti e contiene un record per ogni diverso sistema 
 operativo dei server selezionati in una campagna di aggiornamento;
 \item updatejob: tabella che contiene le informazioni sulle sessioni 
@@ -26,7 +26,8 @@ di aggiornamento avviate su un server. Ogni record in questa tabella
 rappresenta un'operazione di aggiornamento. È possibile avere più operazioni 
 di aggiornamento per un singolo server, per consentire di ripetere 
 l’aggiornamento in caso di fallimento;
-\item updatejobstatushistory: tabella che tiene traccia dello stato d'avanzamento dell’operazione di aggiornamento. Questa tabella è utilizzata 
+\item updatejobstatushistory: tabella che tiene traccia dello stato d'avanzamento 
+dell’operazione di aggiornamento. Questa tabella è utilizzata 
 per tenere traccia degli stati di ogni singola operazione di aggiornamento 
 presente nella tabella.
 \end{itemize}
@@ -45,24 +46,24 @@ Come mostra lo schema ER della figura
 progettate in modo da riflettere le relazioni tra le entità coinvolte 
 nel sistema.
 
-La tabella "item" è correlata alla tabella "campaign" attraverso una 
+La tabella “item” è correlata alla tabella “campaign” attraverso una 
 relazione uno-a-molti, in quanto ad ogni campagna di aggiornamento 
 corrisponde un insieme di server che devono essere aggiornati.
 
-La tabella "updatefile" è sempre correlata alla tabella "campaign" 
+La tabella “updatefile” è sempre correlata alla tabella “campaign” 
 attraverso una relazione uno-a-molti, in quanto ad ogni campagna di 
 aggiornamento corrisponde un insieme di file che 
 devono essere installati sui server selezionati.
 
-La tabella "updatejob" è correlata alla tabella "item" in quanto ogni 
+La tabella “updatejob” è correlata alla tabella “item” in quanto ogni 
 operazione di aggiornamento è associata ad un singolo server.
 
 La tabella “updatefile” è associata alla tabella “campaign”, sempre 
 attraverso relazioni uno-a-molti, perché in base al sistema operativo 
 ogni server della campagna avrà il suo file di aggiornamento. 
 
-La tabella "updatejobstatushistory" è correlata alla tabella 
-"updatejob" tramite una relazione uno-a-molti, in quanto ad ogni 
+La tabella “updatejobstatushistory” è correlata alla tabella 
+“updatejob” tramite una relazione uno-a-molti, in quanto ad ogni 
 operazione di aggiornamento corrisponde un insieme di stati di 
 avanzamento dell'operazione.
 
@@ -136,7 +137,10 @@ utente che l’ha caricato.
 \textbf{UpdateJobStatusHistory:}
 \begin{itemize}
 \item update\_job\_id:  l'ID della sessione di aggiornamento;
-\item status: specifica lo stato dell'aggiornamento. I possibili valori sono: "Ready", "Execute error from provision", "Waiting for ping", "Timeout ping", "Waiting for download process", "Timeout download", "Running", "Timeout running", "Rebooting", "Failed", "Completed";
+\item status: specifica lo stato dell'aggiornamento. I possibili valori sono: “Ready”, 
+“Execute error from provision”, “Waiting for ping”, “Timeout ping”, 
+“Waiting for download process”, “Timeout download”, “Running”, “Timeout running”, “Rebooting”, 
+“Failed”, “Completed”;
 \item created\_at: la data e l'ora del passaggio di stato;
 \item note: campo che contiene eventuali note aggiuntive per lo stato dell'aggiornamento.
 \end{itemize}
