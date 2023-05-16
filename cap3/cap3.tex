@@ -46,7 +46,8 @@ presente nella tabella.
   \end{flushright}
 \end{figure}
 
-Come mostra l’immagine dello schema ER, le tabelle del database sono state 
+Come mostra la figura ~\ref{fig:Schema entità-relazione database relazionale} 
+dello schema ER, le tabelle del database sono state 
 progettate in modo da riflettere le relazioni tra le entità coinvolte 
 nel sistema.
 
@@ -145,3 +146,86 @@ utente che l’ha caricato.
 \item created\_at: la data e l'ora del passaggio di stato;
 \item note: campo che contiene eventuali note aggiuntive per lo stato dell'aggiornamento.
 \end{itemize}
+
+
+\section{Design architettura}
+L’Hotfix Response Center è stato realizzato con un’architettura a container. 
+I container sono ambienti isolati e leggeri che includono tutto il necessario 
+per eseguire un'applicazione, compresi il codice, le dipendenze e le librerie.
+
+\subsection{kubernetes}
+La gestione dei container è affidata a Kubernetes, un sistema open-source per 
+l'orchestrazione dei container. È progettato per automatizzare la distribuzione, 
+la scalabilità e la gestione delle applicazioni containerizzate.\\
+
+Kubernetes fornisce un'infrastruttura per coordinare e gestire il deployment 
+dei container in modo efficiente. Si può definire come le applicazioni dovrebbero 
+essere eseguite, specificando requisiti di risorse, definendo relazioni tra i 
+componenti e gestendo le dipendenze.
+Su Kubernetes, i container sono organizzati e gestiti all'interno di unità 
+chiamate "pod". Un pod è il più piccolo oggetto di gestione in Kubernetes e 
+rappresenta un singolo insieme di uno o più container, con uno spazio di 
+archiviazione e una rete condivisa.\\
+
+Le principali caratteristiche di  Kubernetes sono:
+\begin{itemize}
+\item Orchestrazione: coordina e distribuisce i container su un cluster di macchine. Gestisce automaticamente il posizionamento dei container, il bilanciamento del carico, la scalabilità e il ripristino in caso di errori;
+\item Autoscaling: supporta l'autoscaling automatico in base al carico dell'applicazione. Può aumentare o diminuire il numero di repliche dei container in base alle metriche definite, assicurando che l'applicazione abbia sempre le risorse necessarie per funzionare correttamente;
+\item Gestione delle risorse: consente di definire i requisiti di risorse per i container, come CPU e memoria, e li alloca in modo appropriato all'interno del cluster. Ciò garantisce che le risorse siano utilizzate in modo efficiente e che le applicazioni non interferiscano tra loro;
+\item Rolling updates e rollback: Kubernetes facilita gli aggiornamenti delle applicazioni senza interruzioni. Puoi eseguire aggiornamenti dei container in modo graduale e controllato, monitorando lo stato e, se necessario, effettuando il rollback a una versione precedente.
+\end{itemize}
+
+Le risorse dell’Hotfix Response Center sono tutte state inserite in un namespace 
+dedicato (una sorta di contenitore virtuale) in modo da poter coesistere con 
+altri microservizi all'interno del cluster.\\
+
+All’interno del namespace sono presenti le seguenti risorse:
+\begin{itemize}
+\item Deployment frontend: esegue un pod con il web server nginx che mette a disposizione i file statici del front-end, relativo al pannello di amministrazione;
+\item Deployment backend: esegue tre pod per consentono l’esecuzione del backend in Django;
+\item Cronjob di avvio: schedulato ogni 30 minuti. Questo job seleziona tutte le campagne attive e fa partire gli aggiornamenti per i server schedulati in quello slot temporale;
+\item Cronjob di monitoraggio: schedulato ogni 10 minuti. Questo job monitora gli aggiornamenti in corso. Deve controllare che gli aggiornamenti automatici procedano senza problemi rilevando se si verificano dei timeout.
+\end{itemize}
+
+La figura ~\ref{fig:Design architettura} 
+mostra uno schema rappresentativo dell’architettura.
+
+\begin{figure}[H]
+  \begin{flushright}
+    \centering
+    \includegraphics[width=0.90\textwidth]{imgs/architecture_design.pdf}
+    \caption{Design architettura}
+    \label{fig:Design architettura}
+  \end{flushright}
+\end{figure}
+
+
+\subsection{Ansible}
+Un altro componente importante dell’architettura è Ansible, una piattaforma 
+open-source per l'automazione IT. Ansible viene utilizzato per semplificare 
+la gestione e l'automazione di sistemi IT complessi. Ansible utilizza un 
+linguaggio di automazione semplice basato su YAML chiamato "Playbook" per 
+definire le azioni da eseguire sui nodi di destinazione.\\
+
+Ansible viene utilizzato per connettersi da remoto ai server dei clienti per 
+eseguire l’aggiornamento in modo automatico. Tramite Ansible viene lanciato un 
+playbook sul nodo di controllo che, in base al sistema operativo del server da 
+aggiornare, lancia un eseguibile per Windows o per Linux.
+Questo eseguibile si occuperà dell'aggiornamento remoto del server. 
+L’eseguibile, in modo autonomo, si preoccuperà di scaricare dallo storage 
+S3 il file di aggiornamento e di installarlo sul server. 
+Ad ogni passo d’esecuzione l’eseguibile comunica al backend dell’Hotfix Response Center, 
+tramite le API, i passi dell’aggiornamento, seguendo lo schema di figura ~\ref{fig:Stati di aggiornamento}.
+
+ \begin{figure}[H]
+  \begin{flushright}
+    \centering
+    \includegraphics[width=0.90\textwidth]{imgs/update_statues.png}
+    \caption{Stati di aggiornamento}
+    \label{fig:Stati di aggiornamento}
+  \end{flushright}
+\end{figure}
+
+Se l’aggiornamento avviene con successo il server andrà in stato “completed”.
+Nel caso qualcosa non dovesse funzionare correttamente il cronjob di monitoraggio 
+rileverà il timeout d’esecuzione e marcherà l’aggiornamento come “failed”.

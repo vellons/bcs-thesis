@@ -16,7 +16,7 @@ vulnerabilità.
 \begin{figure}[H]
   \begin{flushright}
     \centering
-    \includegraphics[width=0.90\textwidth]{imgs/VulnerabilityWindows.png}
+    \includegraphics[width=0.90\textwidth]{imgs/vulnerability_windows.png}
     \caption{Sequenza degli eventi di una vulnerabilità}
     \label{fig:Sequenza degli eventi di una vulnerabilità}
   \end{flushright}
@@ -218,3 +218,49 @@ Gli stati che si susseguiranno durante l’operazione saranno:
 Al termine del riavvio il job di monitoraggio assegnerà lo stato 
 completato. Se trascorre troppo tempo in uno step intermedio 
 l’installazione andrà in timeout e l’aggiornamento sarà fallito.
+
+
+\section{Diagramma delle attività}
+La figura ~\ref{fig:Diagramma delle attività per la creazione della campagna} 
+rappresenta il diagramma delle attività per la creazione di una campagna di Hotfix.\\
+
+Le entità coinvolte nella creazione sono:
+\begin{itemize}
+\item NIST (National Institute of Standards and Technology);
+\item Il vendor del sistema operativo cioè colui che ha creato e gestisce il 
+sistema operativo (Esempio Microsoft è il vendor di Windows);
+\item Il tool Hotfix Response Center;
+\item Il cliente.
+\end{itemize}
+
+Il flusso che porta alla creazione di una campagna di installazione 
+parte dal NIST, l’ente americano che si occupa di gestire il National 
+Vulnerability Database (NVD) fornendo punteggi CVSS per tutte le 
+vulnerabilità note. Per quasi tutte le vulnerabilità, i vendor si preoccupano 
+di fornire un patch, per sanare la vulnerabilità.
+Il tool Hotfix Response Center è stato pensato per intervenire in situazioni di 
+emergenza, per patchare nel più breve tempo possibile le vulnerabilità critiche. 
+Nel caso il CVSS (Common Vulnerability Scoring System) superi lo score di 9 su 
+10 si controlla se tra i server dei clienti è presente quella vulnerabilità.
+
+Se i server dei clienti sono impattati si informa il cliente e, nel caso autorizzi 
+l’aggiornamento straordinario, si procede con la creazione della campagna di 
+aggiornamento per i server impattati dalla vulnerabilità.
+
+Durante la creazione della campagna vengono caricate le patch di aggiornamento 
+all’interno del tool e l’algoritmo di schedulazione cerca di trovare una 
+schedulazione ottimale per patchare i server, nel più breve tempo possibile. 
+Al termine di queste operazioni la campagna può essere avviata.
+
+Sarà poi compito del cronjob di avvio, che parte ogni 30 minuti, controllare 
+tutte le campagne attive e far partire l'aggiornamento automatico per i server 
+schedulati nelle varie fasce orario.
+
+\begin{figure}[H]
+  \begin{flushright}
+    \centering
+    \includegraphics[width=0.98\textwidth]{imgs/hotfix_activity_diagram.pdf}
+    \caption{Diagramma delle attività per la creazione della campagna}
+    \label{fig:Diagramma delle attività per la creazione della campagna}
+  \end{flushright}
+\end{figure}
