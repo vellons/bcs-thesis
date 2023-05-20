@@ -1,6 +1,8 @@
 def calc_available_slots(self):
     """
-    This method will set the slot availability based on the maintenance_window
+    This method will set the slot availability based on the maintenance_window.
+    This will edit the self.data dict. 
+    If the slot is available, the value will be True.
     """
     if self.maintenance_window is None:
         logger.debug('maintenance_window is {}'.format(self.maintenance_window))

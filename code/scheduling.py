@@ -3,13 +3,23 @@
 # the server with more hour available 
 # (or maintenance_window==None) it will be scheduled last
 
+self.collect_items_data()
+self.calendar = HotfixCalendar(
+    int(self.campaign.start_at.timestamp()),
+    int(self.campaign.end_at.timestamp()),
+    self.SLOT_DURATION_IN_MINUTE,  # Will be 30 minutes
+    self.SLOT_MAX_ELEMENTS  # Will be 5 item
+)
+self.calc_items_priority_score()
+self.calc_dependencies_tree()
+
 ...
+
 server_key_in_order = sorted(
     self.items_data.keys(),
     key=lambda k: self.items_data[k].priority_score,
 )
 server_key_not_found_a_schedule = []
-server_key_cannot_schedule = []
 
 for key in server_key_in_order:
     server = self.items_data[key]
