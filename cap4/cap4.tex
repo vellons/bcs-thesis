@@ -39,6 +39,7 @@ distribuire le risorse su più server. ~\cite{wiki:api_rest}\\
 
 
 \subsection{Django}
+\label{subsec:Django}
 Django REST Framework, spesso abbreviato in DRF, è un framework 
 open-source per lo sviluppo di API REST. Offre una serie di funzionalità 
 che semplificano la creazione di API scalabili e ben documentate.
@@ -81,8 +82,9 @@ e serializzare i dati della campagna utilizzando un serializer.
 
 Nel file models.py viene definita la classe Campaign che estende la classe 
 models.Model. Questa classe rappresenta il modello di dati per una campagna e 
-contiene tutti i campi definiti nel paragrafo XXXXXXXXXXXXX relativo alla definizione 
-delle tabelle. Ogni campo definisce il tipo di dati che può contenere e le 
+contiene tutti i campi definiti nel paragrafo ~\ref{subsec:Definizioni delle tabelle} 
+relativo alla definizione delle tabelle. 
+Ogni campo definisce il tipo di dati che può contenere e le 
 eventuali opzioni di configurazione. 
 
 Nel file views.py viene definita la classe CampaignListCreateAPIView che 
@@ -165,4 +167,3 @@ schiaccera il bottone “Crea campagna” per salvare la campagna.
 Il codice JavaScript associato al click del bottone farà una chiamata POST 
 alla API del backend con la quale passerà tutte le informazioni inserite 
 dell’utente e verrà salvata la campagna all’interno del database.
-

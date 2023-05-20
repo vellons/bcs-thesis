@@ -6,7 +6,8 @@ supportare le funzionalità principali dell'applicazione.
 A tal fine, si è deciso di realizzare un database relazionale che 
 contenesse diverse tabelle. La creazione delle tabelle è gestita 
 tramite Django, un framework Python molto conosciuto nello sviluppo di 
-applicativi backend, verrà dettagliato in seguito.\\
+applicativi backend, verrà dettagliato nella sezione dedicata a 
+pagina ~\pageref{subsec:Django}.\\
 
 \noindent Il database relazionale comprende quindi diverse tabelle, tra cui:
 \begin{itemize}
@@ -73,7 +74,9 @@ utilizzano il backend. Infatti, ogni campagna creata è associata ad
 un creatore e ogni file di aggiornamento caricato è associato ad un 
 utente che l’ha caricato.
 
+
 \subsection{Definizioni delle tabelle}
+\label{subsec:Definizioni delle tabelle}
 
 \noindent \textbf{Campaign:}
 \begin{itemize}
@@ -151,6 +154,7 @@ L’Hotfix Response Center è stato realizzato con un’architettura a container
 I container sono ambienti isolati e leggeri che includono tutto il necessario 
 per eseguire un'applicazione, compresi il codice, le dipendenze e le librerie.
 
+
 \subsection{Kubernetes}
 La gestione dei container è affidata a Kubernetes, un sistema open-source per 
 l'orchestrazione dei container. È progettato per automatizzare la distribuzione, 
@@ -202,8 +206,9 @@ Il rettangolo azzurro rappresenta il namasepace dedicato all'interno del cluster
 Il backend contatta anche altri microservizi, presenti in altri namespace, dello stesso cluster.
 Ad esempio contatta le API del gestionale per recuperare le informazioni dei server da aggiornare.
 
-\label{subsec:Ansible}
+
 \subsection{Ansible}
+\label{subsec:Ansible}
 Un altro componente importante dell’architettura è Ansible, una piattaforma 
 open-source per l'automazione IT. Ansible viene utilizzato per semplificare 
 la gestione e l'automazione di sistemi IT complessi, utilizzando un 
