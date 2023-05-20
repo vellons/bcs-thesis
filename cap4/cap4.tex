@@ -1,2 +1,168 @@
 \mcchap{Implementazione}{cap:cap4}
-\section{Boh}
+\section{Backend}
+Il backend è la parte del sistema che si occupa dell'elaborazione dei dati e 
+dell'interazione con il database. È responsabile della gestione delle 
+richieste e delle risposte tra il frontend e il database.
+
+Nel caso dell’Hotfix Response Center il backend è stato sviluppato 
+utilizzando il framework Django, per Python. Django è stato utilizzato assieme 
+alla libreria Django REST framework per realizzare le API REST necessarie per 
+la comunicazione tra frontend e backend.
+
+
+\subsection{Api rest}
+Le API REST (Representational State Transfer) sono un tipo di architettura 
+software utilizzata per la progettazione e lo sviluppo di servizi web. 
+Le API REST consentono alle applicazioni di comunicare tra loro e 
+scambiare dati utilizzando i protocolli standard del web, come HTTP. 
+Le API REST sono basate su un insieme di principi fondamentali. 
+In primo luogo, utilizzano le risorse come concetto centrale, dove ogni 
+risorsa rappresenta un'entità specifica (ad esempio, un oggetto, un 
+utente, una transazione) e viene identificata da un URL univoco.
+
+Le API REST utilizzano metodi HTTP come GET, POST, PUT, PATCH e DELETE 
+per consentire alle applicazioni di accedere, creare, modificare o 
+eliminare le risorse. Ad esempio, una richiesta HTTP GET a un'API REST 
+può essere utilizzata per ottenere i dettagli di una risorsa, mentre una 
+richiesta POST può essere utilizzata per creare una nuova risorsa.
+Le API REST utilizzano anche la rappresentazione dei dati, di solito nel 
+formato JSON o XML, per trasmettere le informazioni tra client e server. 
+Questo permette una facile interoperabilità tra diverse piattaforme e 
+linguaggi di programmazione.
+
+Uno dei vantaggi delle API REST è la loro scalabilità e flessibilità. 
+Le API REST sono state progettate per essere stateless, il che significa 
+che ogni richiesta deve contenere tutte le informazioni necessarie per 
+essere elaborata e non richiede lo stato persistente del server. Ciò 
+consente una maggiore scalabilità del sistema e la possibilità di 
+distribuire le risorse su più server. ~\cite{wiki:api_rest}\\
+
+
+\subsection{Django}
+Django REST Framework, spesso abbreviato in DRF, è un framework 
+open-source per lo sviluppo di API REST. Offre una serie di funzionalità 
+che semplificano la creazione di API scalabili e ben documentate.
+DRF si basa sui concetti fondamentali di Django, come il modello 
+MVC (Model-View-Controller) e l'ORM (Object-Relational Mapping). 
+Sfrutta la potenza di Django per fornire una struttura solida e coerente 
+per la creazione di API REST. Con DRF, è possibile definire i modelli di 
+dati utilizzando le classi Django (che verranno poi convertiti in tabelle). 
+Una delle caratteristiche chiave di DRF è la sua gestione avanzata della 
+serializzazione dei dati. Questo consente di convertire facilmente gli 
+oggetti Python in formati serializzati come JSON o XML e viceversa. 
+DRF offre anche un sistema completo per la gestione dell'autenticazione 
+e dell'autorizzazione delle API. È possibile configurare facilmente 
+l'autenticazione basata su token, l'autenticazione OAuth2, l'autenticazione 
+basata su sessione e altre modalità di autenticazione. Inoltre, supporta la 
+definizione di permessi personalizzati per controllare l'accesso agli 
+endpoint delle API in base a regole specifiche.
+
+Un'altra caratteristica utile di DRF è la gestione delle route API. 
+DRF offre un sistema di routing che consente di definire 
+facilmente gli endpoint delle API e associarli alle corrispondenti view. 
+Questo semplifica l'organizzazione delle API in base a risorse specifiche 
+e facilita la creazione di endpoint RESTful standardizzati.
+Infine, DRF include un modulo di documentazione automatica che genera 
+automaticamente la documentazione delle API basandosi sulle definizioni 
+delle API e dei serializer. Questo rende più semplice per gli sviluppatori 
+e gli utenti delle API comprendere e utilizzare correttamente le risorse 
+fornite dall'applicazione. ~\cite{wiki:django}\\
+
+
+\subsection{Esempio}
+I seguenti pezzi di codice illustrano in Django la realizzazione di 
+un'API REST per la gestione delle campagne all'interno del backend.
+In particolare, l'esempio illustra come definire un modello di dati per una 
+campagna, creare URL per gestire le richieste relative alle campagne, definire 
+una vista che si occupa di recuperare e creare campagne utilizzando il modello 
+e serializzare i dati della campagna utilizzando un serializer.
+
+\lstinputlisting[style=custompython, language=Python]{code/django.py}
+
+Nel file models.py viene definita la classe Campaign che estende la classe 
+models.Model. Questa classe rappresenta il modello di dati per una campagna e 
+contiene tutti i campi definiti nel paragrafo XXXXXXXXXXXXX relativo alla definizione 
+delle tabelle. Ogni campo definisce il tipo di dati che può contenere e le 
+eventuali opzioni di configurazione. 
+
+Nel file views.py viene definita la classe CampaignListCreateAPIView che 
+gestisce le richieste relative alle campagne. La variabile queryset definisce 
+l'insieme di dati su cui operare, in questo caso tutte le campagne ordinate per 
+l'ID. Vengono anche specificati i  filtri e l’ordinamento da utilizzare. 
+La variabile serializer\_class definisce la classe del serializer da utilizzare 
+per la serializzazione dei dati in JSON.
+
+Nel file serializers.py viene definita la classe CampaignSerializer che gestisce 
+la serializzazione dei dati della campagna. La classe Meta all'interno del 
+serializer specifica il modello di riferimento (Campaign), i campi da includere 
+nella serializzazione ('\_\_all\_\_' indica tutti i campi del modello) e i campi di 
+sola lettura che non possono essere modificati.
+
+Nel file urls.py viene definito il percorso delle API per gestire le richieste 
+relative alle campagne. In particolare, quando viene inviata una richiesta all'endpoint 
+/campaigns/, viene utilizzata la classe CampaignListCreateAPIView come vista 
+per gestire la richiesta. Questa vista estende la classe generics.ListCreateAPIView 
+fornita da Django REST Framework e fornisce funzionalità per visualizzare 
+l'elenco delle campagne e creare una nuova campagna.\\
+
+Facendo richieste di HTTP GET sull’endpoint /campaigns/ verrà fornito l’elenco 
+delle campagne inserite nel database. Sarà possibile utilizzare i filtri per 
+ricercare tra tutte le campagne solo quelle desiderate. Le informazioni saranno 
+restituite in formato JSON con i campi definiti nel serializer.
+
+Facendo invece una richiesta di HTTP POST sullo stesso endpoint sarà possibile 
+creare una nuova campagna. Le informazioni della nuova campagna andranno 
+inserite nel body della richiesta.
+Per entrambe le richieste dovrà essere fornito il token di autenticazione per 
+verificare l’identità e le autorizzazioni dell’utente che sta utilizzando i 
+servizi.
+
+
+\section{Frontend}
+Il frontend è la parte dell’applicazione che interagisce direttamente con 
+l’operatore. È responsabile della presentazione dei dati consentendo agli 
+utenti di visualizzare e interagire con il contenuto dell'applicazione web.
+
+Nel contesto dello sviluppo web, il frontend si riferisce alla combinazione 
+di tecnologie, linguaggi di programmazione e strumenti utilizzati per creare 
+l'interfaccia utente di un'applicazione web. Ciò include l'utilizzo di HTML 
+(Hypertext Markup Language) per definire la struttura e il contenuto della 
+pagina, CSS (Cascading Style Sheets) per definire il layout e l'aspetto 
+visivo della pagina, e JavaScript per aggiungere interattività e funzionalità 
+dinamiche.
+
+In questo caso per lo sviluppo dell’interfaccia frontend si è deciso di 
+utilizzare il framework Vue.js per semplificare lo sviluppo e migliorare 
+l'efficienza di programmazione.
+
+\subsection{Vue.js}
+Vue.js è un framework JavaScript open-source progressivo utilizzato per la creazione di 
+interfacce utente dinamiche e reattive. È incentrato sulla creazione di 
+applicazioni web a pagina singola (Single-Page Applications) e si concentra 
+sulla visualizzazione dei dati e sulla gestione dello stato dell'applicazione.
+
+Le caratteristiche chiave di Vue.js includono la reattività dei componenti, 
+la gestione dichiarativa degli elementi del documento HTML, un sistema di 
+componenti componibile e la capacità di gestire lo stato dell'applicazione in 
+modo efficiente. Vue.js offre anche una vasta gamma di strumenti e librerie di 
+supporto, oltre a una comunità attiva che contribuisce allo sviluppo e 
+all'evoluzione del framework.
+
+Con la sua sintassi intuitiva e la facilità d'uso, Vue.js è diventato popolare 
+tra gli sviluppatori per la creazione di interfacce utente complesse, ma 
+mantenendo una curva di apprendimento accessibile. È ampiamente utilizzato per 
+la creazione di applicazioni web moderne e reattive, fornendo un'esperienza 
+utente ottimizzata e una manutenzione semplificata del codice. 
+~\cite{wiki:vuejs}\\
+
+
+\subsection{Esempio}
+todo: CODICE DELIVERY HUB creazione campagna.\\
+
+Questa schermata del frontend viene utilizzata per creare una nuova campagna.
+L’operatore, al termine dell’inserimento di tutte le informazioni richieste, 
+schiaccera il bottone “Crea campagna” per salvare la campagna.
+Il codice JavaScript associato al click del bottone farà una chiamata POST 
+alla API del backend con la quale passerà tutte le informazioni inserite 
+dell’utente e verrà salvata la campagna all’interno del database.
+
