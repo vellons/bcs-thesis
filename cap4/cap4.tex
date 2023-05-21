@@ -47,7 +47,8 @@ DRF si basa sui concetti fondamentali di Django, come il modello
 MVC (Model-View-Controller) e l'ORM (Object-Relational Mapping). 
 Sfrutta la potenza di Django per fornire una struttura solida e coerente 
 per la creazione di API REST. Con DRF, è possibile definire i modelli di 
-dati utilizzando le classi Django (che verranno poi convertiti in tabelle). 
+dati utilizzando le classi Django (che verranno poi convertiti in tabelle).
+
 Una delle caratteristiche chiave di DRF è la sua gestione avanzata della 
 serializzazione dei dati. Questo consente di convertire facilmente gli 
 oggetti Python in formati serializzati come JSON o XML e viceversa. 
@@ -158,12 +159,179 @@ utente ottimizzata e una manutenzione semplificata del codice.
 ~\cite{wiki:vuejs}\\
 
 
-\subsection{Esempio}
-todo: CODICE DELIVERY HUB creazione campagna.\\
+\section{Interfaccia utente ed esempio utilizzo}
+Per accedere al pannello di controllo dell’Hotfix Response Center, gli utenti 
+possono visitare la pagina web privata tramite il proprio browser. 
+Una volta effettuato l'accesso al portale, verrà visualizzato un elenco delle 
+campagne già a sistema.\\
 
-Questa schermata del frontend viene utilizzata per creare una nuova campagna.
-L’operatore, al termine dell’inserimento di tutte le informazioni richieste, 
-schiaccera il bottone “Crea campagna” per salvare la campagna.
-Il codice JavaScript associato al click del bottone farà una chiamata POST 
-alla API del backend con la quale passerà tutte le informazioni inserite 
-dell’utente e verrà salvata la campagna all’interno del database.
+Per vedere i dettagli delle campagne precedentemente create basterà fare click 
+sulla riga corrispondente. Per creare una nuova campagna, gli utenti 
+possono fare click sul bottone “Crea una nuova campagna” posizionato nell'angolo 
+in alto a destra dell’interfaccia.
+
+\begin{figure}[H]
+\begin{flushright}
+    \centering
+    \frame{\includegraphics[width=0.98\textwidth]{imgs/ui/1_list_campaign.png}}
+    \caption{Pagina principale, elenco delle campagne}
+    \label{fig:Elenco delle campagne}
+\end{flushright}
+\end{figure}
+
+Una volta che l'utente schiaccia il bottone per creare una nuova campagna, Vue.js 
+esegue l'azione di click e carica dinamicamente la pagina specifica dedicata alla 
+creazione della campagna. 
+
+Questa pagina offre all'utente un'interfaccia intuitiva per inserire tutte 
+le informazioni necessarie per avviare il processo di creazione 
+della campagna. Attraverso questa pagina, l'utente può fornire le informazioni di base, 
+come il nome della campagna, la modalità di esecuzione e le date di inizio e di 
+fine.\\
+
+Nella pagine successive verranno mostrate le schermate relative alla creazione di 
+una campagna di aggiornamento su tutti i Windows Server di un cliente, per installare
+un aggiornamento comulativo rilasciato da Windows con identificativo KB5014850 che
+server a risolvere delle vulnerabilità di sistema.
+
+\begin{figure}[H]
+\begin{flushright}
+    \centering
+    \frame{\includegraphics[width=0.95\textwidth]{imgs/ui/2_new_campagin.png}}
+    \caption{Creazione di una nuova campagna}
+    \label{fig:Creazione di una nuova campagna}
+\end{flushright}
+\end{figure}
+
+Al click del bottone “Salva e prosegui” verrà eseguito il codice JavaScript per 
+fare una chiamata POST alle API del backend con la quale verranno passate tutte le 
+informazioni inserite dell’utente e verrà salvata la campagna all’interno del 
+database.
+
+Successivamente verrà mostrata la schermata per selezionare i server impattati 
+dalla vulnerabilità. Da questa schermata è possibile utilizzare i filtri per 
+selezionare rapidamente solo i server che si vogliono aggiornare.
+
+\begin{figure}[H]
+\begin{flushright}
+    \centering
+    \frame{\includegraphics[width=0.95\textwidth]{imgs/ui/3_add_server.png}}
+    \caption{Selezione elenco dei server impattati dalla vulnerabilità}
+    \label{fig:Selezione elenco dei server impattati dalla vulnerabilità}
+\end{flushright}
+\end{figure}
+
+Dopo aver selezionato tutti i server impattati sarà sufficiente fare click sul 
+bottone “Salva e schedula” per inviare l’elenco dei server al backend, sempre 
+tramite le API REST. 
+Il backend avvierà a questo punto l’algoritmo di schedulazione per trovare uno
+slot di manutenzione adatto per l'aggiornamento di tutti i server.
+
+\begin{figure}[H]
+\begin{flushright}
+    \centering
+    \frame{\includegraphics[width=0.98\textwidth]{imgs/ui/4_calendar.png}}
+    \caption{Calendario della campagna}
+    \label{fig:Calendario della campagna}
+\end{flushright}
+\end{figure}
+
+Nella campagna selezionata sono stati inclusi 531 server, tutti pianificati con 
+successo rispettando le rispettive finestre di manutenzione. Di questi, 72 sono 
+stati considerati dipendenze e sono stati schedulati garantendo una separazione 
+di 24 ore rispetto ai server di riferimento.
+
+Per tutti i server della campagna è disponibile WinRM che consente quindi 
+l'esecuzione automatica e remota degli aggiornamenti. Tuttavia, per 355 server 
+è necessaria l'approvazione del cliente prima di procedere, mentre per 18 
+server mancano le credenziali di connessione remota. Queste eccezioni sono 
+segnalate nel calendario tramite un'icona di avviso, mentre per gli altri server 
+gli aggiornamenti automatici partiranno nel rispettivo orario prestabilito.
+I server con gli avvisi dovranno essere approvati per tempo dal cliente e 
+l'operatore avrà del tempo per sistemare i problemi di credenziali sui 18 server.\\
+
+Il calendario mostra un riepilogo, per ciascun giorno della campagna, 
+consentendo di visualizzare i server schedulati nella giornata espandendo la 
+settimana tramite un pulsante con una freccia verso il basso.
+
+La pianificazione evidenzia in modo accurato come l'algoritmo abbia schedulato 
+numerosi server nella prima settimana, riempiendo quasi completamente i 48 slot 
+giornalieri disponibili. Nella terza settimana sono stati pianificati i server 
+che presentano una programmazione più complessa a causa delle restrizioni imposte 
+dalle finestre di manutenzione.\\
+
+Prima dell'avvio della campagna, è necessario caricare i file di aggiornamento. 
+In particolare, si mira a risolvere un gruppo di vulnerabilità sui sistemi 
+operativi Windows Server utilizzando l'aggiornamento di sicurezza cumulativo 
+con identificativo KB5014850, fornito da Microsoft.
+
+Cliccando sul pulsante “Carica file associati”, si accede alla schermata dedicata 
+al caricamento delle patch di sicurezza.
+
+\begin{figure}[H]
+\begin{flushright}
+    \centering
+    \frame{\includegraphics[width=0.98\textwidth]{imgs/ui/5_upload_files.png}}
+    \caption{Upload dei file di aggiornamento}
+    \label{fig:Upload dei file di aggiornamento}
+\end{flushright}
+\end{figure}
+
+Considerando i 531 server selezionati, si rilevano tre diversi sistemi operativi: 
+Windows Server 2016, Windows Server 2019 e Windows Server 2022. Per ognuno di 
+questi sistemi operativi, è necessario caricare l'aggiornamento di sicurezza 
+corretto, ottenibile dai canali ufficiali del fornitore del sistema operativo.
+
+Una volta completato il caricamento, sarà possibile avviare la campagna mediante 
+l'apposito pulsante “Abilita campagna”. Successivamente, l'Hotfix Response Center 
+si occuperà dell'aggiornamento automatico e remoto dei server, eseguendo gli 
+aggiornamenti secondo l'orario prestabilito.
+
+\begin{figure}[H]
+\begin{flushright}
+    \centering
+    \frame{\includegraphics[width=0.98\textwidth]{imgs/ui/6_list_servers.png}}
+    \caption{Elenco dei server della campagna}
+    \label{fig:Elenco dei server della campagna}
+\end{flushright}
+\end{figure}
+
+Attraverso la schermata “Elenco server”, è possibile visualizzare lo stato di 
+aggiornamento di ogni singolo server. Tale stato può assumere quattro possibili 
+valori: “Aggiornamento in attesa”, “Aggiornamento in corso”, “Completato” o “Fallito”.
+
+Nel caso specifico di un aggiornamento fallito, è possibile utilizzare 
+l'interfaccia del calendario per programmare manualmente una nuova data, al fine 
+di tentare un aggiornamento automatico successivo. Tale funzionalità garantisce 
+un'ulteriore opportunità per risolvere eventuali problemi e completare con 
+successo l'aggiornamento del server interessato.\\
+
+Nella maggior parte dei casi, l'aggiornamento risulta fallire a causa di server 
+non raggiungibili o di credenziali di connessione non corrette. Quando ciò accade, 
+è richiesto un intervento manuale per risolvere il problema prima di riprovare 
+l'aggiornamento automatico. Per questo motivo si è deciso di lasciare all’operatore 
+la decisione sulla scelta di una nuova data, per ritentare l'aggiornamento automatico.
+
+
+\subsection{Conferma aggiornamento}
+L’Hotfix Response Center è autonomamente in grado di riconoscere se 
+l'aggiornamento è stato installato o meno sul server capendo anche se è 
+necessario un riavvio per poterlo applicare correttamente.
+
+In ogni caso, per verificare la corretta applicazione dell'aggiornamento di 
+sicurezza applicato da questa campagna d’esempio, è sufficiente collegarsi al 
+server e verificare manualmente l’installazione lanciando il comando “Get-Hotfix” 
+su una console Powershell con privilegi di amministratore.
+
+\begin{figure}[H]
+\begin{flushright}
+    \centering
+    \frame{\includegraphics[width=0.98\textwidth]{imgs/ui/7_powershell_get_hotfix.png}}
+    \caption{Console con il comando per verificare l'installazione dell'aggiornamento}
+    \label{fig:Console con il comando per verificare l'installazione dell'aggiornamento}
+\end{flushright}
+\end{figure}
+
+Nel server in questione possiamo notare che l'ultimo aggiornamento installato è
+proprio l'aggiornamento comulativo KB5014850 che conferma quindi l'installazione
+remota e automatica dell'aggiornamento di sicurezza, attraverso la campagna di Hotfix.
