@@ -1,7 +1,92 @@
 \mcchap{Conclusioni}{cap:cap5}
 
 \section{Soluzioni già presenti sul mercato}
-Big Fix di IBM
+L'Hotfix Response Center è uno strumento realizzato da zero per adattarsi ad un 
+contesto aziendale in cui ci sono già altri sistemi di patching in funzione. 
+L'obiettivo era creare un tool indipendente dai sistemi aziendali già in uso, 
+che potesse funzionare in modo semplice e soprattutto rapido in quanti più 
+scenari possibili.\\
+
+Esistono però diverse soluzioni simili ma più complete sul mercato. Un esempio è 
+BigFix di IBM, un software che permette di gestire in maniera centralizzata 
+le patch di sicurezza e le configurazioni di sistema di tutti i computer di una 
+rete aziendale.
+La soluzione BigFix di IBM si basa su un'architettura client-server in cui i 
+dispositivi sono dotati di un agente che comunica costantemente con il server 
+centrale. Questo permette alle organizzazioni di eseguire azioni di gestione e 
+sicurezza su larga scala, come l'applicazione di patch, la distribuzione di software, 
+la configurazione dei dispositivi e molto altro, in modo centralizzato e 
+automatizzato. ~\cite{ibm:bigfix}
+
+Sebbene BigFix offra funzionalità di gestione e sicurezza avanzate, è importante 
+considerare alcuni fattori prima di adottarlo. In primo luogo, bisogna tenere 
+presente che BigFix richiede l'acquisto di una licenza per ogni macchina gestita, 
+il che può comportare costi significativi per le organizzazioni con un gran numero 
+di server da gestire. Questo aspetto finanziario potrebbe influenzare la decisione 
+di adottare BigFix come soluzione per la gestione delle sole patch.
+Inoltre, per funzionare, BigFix ha bisogno di un suo agente funzionante sui server. 
+L’agente è un applicativo da installare su ogni server che si vuole controllare. 
+Il suo scopo è mantenere la comunicazione tra server e console centrale, in attesa 
+di ricevere azioni da eseguire sul server gestito. L’installazione dell’agente può 
+richiedere un impegno aggiuntivo in termini di tempo e risorse.
+
+Soluzioni come BigFix offrono una vasta gamma di funzionalità di gestione e sicurezza, 
+è però importante valutare attentamente i costi fissi di tale soluzione, le 
+implementazioni e le esigenze specifiche dell'organizzazione.\\ 
+
+L'Hotfix Response Center si propone di fornire una soluzione flessibile e semplice 
+per la gestione delle patch senza però avere costi di gestione. L’Hotfix è stato 
+progettato per essere indipendente dai sistemi aziendali già in uso e per funzionare 
+in modo semplice e rapido in diversi scenari aziendali, solamente quando necessario. 
+La sua flessibilità consente di adattarlo alle esigenze specifiche dell'organizzazione 
+senza dover installare o mantenere nessun agente sul server che si vuole aggiornare.\\
+
+In conclusione, mentre soluzioni come BigFix offrono una vasta gamma di funzionalità di 
+gestione e sicurezza, è importante valutare attentamente i costi, le implementazioni e 
+le esigenze specifiche dell'organizzazione prima di prendere una decisione. 
+L'Hotfix Response Center si propone di fornire una soluzione, semplice e veloce per 
+l’installazione degli aggiornamenti in situazioni di emergenza, in cui la rapidità è 
+fondamentale. 
+L’hotfix Response Center può essere usato su tutti i server su cui è 
+disponibile l’accesso remoto senza che sia necessario alcun software già installato 
+sui server che si vuole aggiornare.
 
 \section{Sviluppi futuri}
-Il futuro discovery automatico delle CVE e analisi dei software installati sulle macchine.
+L’Hotfix Response Center rappresenta attualmente una soluzione efficace per la gestione in 
+modo rapido delle campagne di aggiornamento, per risolvere le vulnerabilità. Tuttavia, per 
+rendere il processo ancora più efficiente e automatizzato, sono in programma sviluppi futuri 
+che introdurranno funzionalità avanzate.
+
+Uno degli aspetti chiave in fase di sviluppo è la creazione automatica delle nuove campagne 
+di aggiornamento. 
+Attualmente, l'avvio delle campagne richiede un'azione manuale da parte degli operatori, che 
+devono selezionare tutti i server impattati e caricare i file di aggiornamento. L'obiettivo 
+è implementare una funzionalità che suggerisca automaticamente la creazione di nuove campagne 
+in base alle informazioni raccolte da altri software interni all’azienda che recuperano 
+l’elenco di tutti i software installati sui server.
+
+Gli applicativi in questione monitorano costantemente i software installati sui server e 
+inviano ad un database centrale tutte le informazioni recuperate.
+Utilizzando le informazioni rese pubbliche dal NIST, all’interno del National Vulnerability 
+Database, è possibile effettuare dei controlli di analisi proattiva per individuare se tra i 
+software installati nei server dei clienti sono installati software con delle vulnerabilità.
+
+Attraverso questo controllo incrociato l’Hotfix Response Center può suggerire agli 
+amministratori di sistema la creazione di campagne per risolvere automaticamente le 
+vulnerabilità presenti nei server impattati dalle vulnerabilità più gravi.\\
+
+L'implementazione di questa funzionalità consentirà di automatizzare il processo di 
+individuazione e gestione delle vulnerabilità, semplificando ulteriormente il lavoro degli 
+amministratori di sistema e riducendo i tempi di risposta agli aggiornamenti critici. Ciò 
+garantirà un ambiente più sicuro e protetto per le infrastrutture gestire.
+
+Inoltre, l'Hotfix Response Center continuerà a essere sviluppato per integrarsi con altre 
+piattaforme e strumenti utilizzati all'interno dell'azienda. L'obiettivo è creare un ecosistema 
+completo che permetta una gestione centralizzata degli aggiornamenti, sfruttando 
+al massimo le sinergie con i sistemi esistenti.\\
+
+In conclusione, l'Hotfix Response Center è un progetto in continua evoluzione che mira a offrire 
+soluzioni sempre più avanzate per la gestione delle campagne di aggiornamento. Grazie alle 
+funzionalità future in fase di sviluppo, sarà possibile automatizzare il processo di 
+individuazione e gestione delle vulnerabilità, migliorando la sicurezza e l'efficienza 
+complessiva delle infrastrutture monitorate.
