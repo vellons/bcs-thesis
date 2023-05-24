@@ -19,11 +19,11 @@ stesso slot dovrà però avvenire solamente nel caso non ci siano altri slot
 liberi, preferendo sempre slot vuoti. In una situazione ideale si schedula 
 solo 1 server per slot, questo per garantire uniformità nel calendario.\\
 
-\noindent \textbf{Dati in ingresso nell'algoritmo:} data e ora di inizio e fine campagna, elenco dei 
-server da schedulare dove per ogni server sono presenti:
+\noindent \textbf{Dati in ingresso nell'algoritmo:} data e ora di inizio e fine 
+campagna ed elenco dei server da schedulare, dove per ogni server sono presenti:
 \begin{itemize}
 \item atlantis\_id: id del gestionale dal quale provengono le informazioni del server;
-\item fascia di manutenzione/aggiornamento;
+\item fascia di manutenzione;
 \item gruppo di patch: duo o più server con lo stesso gruppo di patch non possono 
 essere schedulati insieme;
 \item dipendenze tra server. Questi server devono essere i primi ad essere 
@@ -60,7 +60,7 @@ per decidere con che ordine schedulare i server all’interno del calendario.
 ottimale, che controllerebbe tutte le possibili schedulazioni, richiederebbe un 
 tempo di esecuzione quadratico. Il calcolo e l’utilizzo del “availability score” 
 per la schedulazione richiederebbe una complessità lineare in termini di tempo e 
-spazio che fornirebbe una soluzione accettabile nel minor tempo possibile.
+spazio e fornirebbe una soluzione accettabile nel minor tempo possibile.
 
 
 \subsection{Fascia di manutenzione}
@@ -169,22 +169,22 @@ Questo valore è la somma tra l’availability score e il grado che
 ha il server all'interno dell’albero delle dipendenze, se i server non 
 hanno dipendenze avranno grado 0.
 
-Poi si ordinano i server per priority score crescente (riga 7 del codice sottostante).
-Successivamente, nel ciclo for di riga 14, si scorrono tutti i server 
+Poi si ordinano i server per priority score crescente (riga 18 del codice sottostante).
+Successivamente, nel ciclo for di riga 24, si scorrono tutti i server 
 da schedulare presenti nella campagna.
 Per ogni server si estrae la lista di tutti gli slot per cui provare 
 la compatibilità. Questi slot da provare vengono restituiti dal metodo 
-get\_list\_of\_slot\_to\_try (riga 19). Questo metodo restituisce gli slot 
+get\_list\_of\_slot\_to\_try (riga 29). Questo metodo restituisce gli slot 
 in ordine temporale restituendo però prima gli slot che hanno meno server 
 già assegnati.
 Per ogni slot restituito si controlla, se è compatibile con la fascia di 
-manutenzione del server (riga 21). Se la fascia di manutenzione permette 
+manutenzione del server (riga 31). Se la fascia di manutenzione permette 
 l’utilizzo di quello slot il server viene schedulato altrimenti si prova 
 per tutti gli slot rimasti.
 
 Nel caso non ci sia nessuno slot disponibile, per effettuare 
 l’aggiornamento del server, questo non avrà una schedulazione e non sarà 
-inserito a calendario (riga 31). In questo caso l’operatore, prima 
+inserito a calendario (riga 41). In questo caso l’operatore, prima 
 dell’avvio della campagna, dovrà selezionare manualmente uno slot per 
 schedulare il server.\\
 
@@ -216,7 +216,7 @@ Il caso peggiore non si verifica quando ci sono tanti
 server da schedulare ma quando ci sono molti server con una fascia di 
 manutenzione molto ristretta, che quindi andrebbero tutti schedulati in 
 pochi slot. Questo farebbe riempire gli slot di una particolare fascia di 
-manutenzione o di un gruppo di slot. A quel punto i server si ritroveranno, 
+manutenzione o di un gruppo di giorni. A quel punto i server si ritroveranno, 
 al termine dell’esecuzione dell’algoritmo, senza uno slot assegnato. 
 In questo caso l’utilizzatore del tool dovrà inserire manualmente uno slot, 
 attraverso il pannello d'amministrazione web, prima di avviare la campagna.\\
@@ -233,7 +233,7 @@ A quel punto si hanno a disposizione pochi secondi per salvare
 l’elenco dei server a database, recuperare le informazioni per la schedulazione 
 ed eseguire l’algoritmo.
 Tutte queste operazioni sono eseguite da un servizio REST, sviluppato in Django, 
-presente nel Backend, che esegue l'algoritmo in Python.
+presente nel backend, che esegue l'algoritmo in Python.
 
 Il tempo di risposta del servizio e quindi il tempo di attesa dell’utente è 
 la somma di: tempo di salvataggio a database di un record di tipo Item per 
@@ -251,7 +251,7 @@ alla schedulazione è il principale fattore che contribuisce alla durata
 totale dell'operazione. In particolare, 
 il recupero delle informazioni richiede più tempo per i numeri di server più 
 elevati, mentre il tempo di esecuzione dell'algoritmo è lineare. 
-In generale, il servizio REST in Django presente nel Backend riesce a gestire 
+In generale, il servizio REST in Django presente nel backend riesce a gestire 
 l'operazione in pochi secondi, garantendo un'esperienza utente fluida.\\
 
 \begin {table}[H]
@@ -294,3 +294,5 @@ di schedulazione per 495 server. I 5 server rimanenti andranno schedulati a
 mano, attraverso l’interfaccia grafica del tool. Nel caso in questione i 5 server 
 rimasti fuori hanno una fascia di manutenzione molto ristretta che è stata 
 occupata da altri server con una fascia di manutenzione simile.
+Modificando opportunamente i parametri dell'algoritmo sarebbe possibile 
+schedulare anche questi server.

@@ -1,9 +1,12 @@
 # Parte del contenuto del file models.py:
 class Campaign(models.Model):
     name = models.CharField(max_length=128)
-    status = models.IntegerField(default=CampaignStatus.DRAFT, choices=CampaignStatus.choices)
-    type = models.CharField(default=CampaignTypes.PKG, choices=CampaignTypes.choices, max_length=3)
-    mode = models.CharField(default=CampaignModes.STANDARD, choices=CampaignModes.choices, max_length=3)
+    status = models.IntegerField(default=CampaignStatus.DRAFT, 
+                    choices=CampaignStatus.choices)
+    type = models.CharField(default=CampaignTypes.PKG, 
+                    choices=CampaignTypes.choices, max_length=3)
+    mode = models.CharField(default=CampaignModes.STANDARD, 
+                    choices=CampaignModes.choices, max_length=3)
     id_ticket = models.CharField(max_length=16)
     start_at = models.DateTimeField(null=True)
     end_at = models.DateTimeField(null=True)
@@ -25,11 +28,13 @@ class Campaign(models.Model):
 class CampaignListCreateAPIView(generics.ListCreateAPIView):
     queryset = Campaign.objects.all().order_by('id')
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    ordering_fields = ['name', 'type', 'status', 'start_at', 'end_at', 'created_at']
+    ordering_fields = ['name', 'type', 'status', 'start_at',
+                         'end_at', 'created_at']
     serializer_class = CampaignSerializer
 
     def perform_create(self, serializer):
-        serializer.save(status=CampaignStatus.DRAFT, created_by_id=self.request.user.id)
+        serializer.save(status=CampaignStatus.DRAFT, 
+                created_by_id=self.request.user.id)
 
 
 # Parte del contenuto del file serializers.py:

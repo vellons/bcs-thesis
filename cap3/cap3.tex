@@ -1,8 +1,8 @@
 \mcchap{Progettazione}{cap:cap3}
 \section{Entità ed associazioni}
-Nella fase di progettazione concettuale del tool, uno dei principali
-obiettivi è stata la definizione di un modello di dati che potesse 
-supportare le funzionalità principali dell'applicazione.
+Nella fase di progettazione concettuale del tool Hotfix Response Center, 
+uno dei principali obiettivi è stata la definizione di un modello di dati 
+che potesse supportare le funzionalità principali dell'applicazione.
 A tal fine, si è deciso di realizzare un database relazionale che 
 contenesse diverse tabelle. La creazione delle tabelle è gestita 
 tramite Django, un framework Python molto conosciuto nello sviluppo di 
@@ -43,7 +43,8 @@ presente nella tabella.
 \end{figure}
 
 Come mostra lo schema ER della figura
-~\ref{fig:Schema entità-relazione del database relazionale}, le tabelle del database sono state 
+~\ref{fig:Schema entità-relazione del database relazionale}, 
+le tabelle del database sono state 
 progettate in modo da riflettere le relazioni tra le entità coinvolte 
 nel sistema.
 
@@ -66,7 +67,7 @@ ogni server della campagna avrà il suo file di aggiornamento.
 La tabella “updatejobstatushistory” è correlata alla tabella 
 “updatejob” tramite una relazione uno-a-molti, in quanto ad ogni 
 operazione di aggiornamento corrisponde un insieme di stati di 
-avanzamento dell'operazione.
+avanzamento dell'operazione.\\
 
 Inoltre, nello schema, è presente la tabella auth\_user. 
 Questa tabella è utilizzata da Django per gestire le utenze che 
@@ -89,9 +90,9 @@ utente che l’ha caricato.
 \item start\_at: la data e l'ora di inizio della campagna;
 \item end\_at: la data e l'ora di fine della campagna;
 \item idrs: l’ID del cliente a cui è associata la campagna;
-\item created\_by: l'utente che ha creato la campagna;
+\item created\_by\_id: l'utente che ha creato la campagna;
 \item algorithm\_started\_at: la data e l'ora di inizio dell'algoritmo di elaborazione;
-\item algorithm\_scheduling\_note: una nota di pianificazione dell'algoritmo di elaborazione;
+\item algorithm\_scheduling\_note: una nota di output dell'algoritmo di schedulazione;
 \item created\_at: la data e l'ora di creazione della campagna;
 \item updated\_at: la data e l'ora di ultima modifica della campagna.\\
 \end{itemize}
@@ -108,7 +109,7 @@ utente che l’ha caricato.
 \item need\_approve: indica se l'elemento richiede approvazione;
 \item manually\_update: indica se l'elemento deve essere aggiornato manualmente;
 \item approved\_at: la data e l'ora di approvazione dell'elemento;
-\item approved\_by: l'utente che ha approvato l'elemento.
+\item approved\_by: l'ID dell'utente che ha approvato l'elemento.
 \end{itemize}
 
 \noindent \textbf{UpdateFile:}
@@ -119,10 +120,10 @@ utente che l’ha caricato.
 \item kb\_code: il codice univoco dell'aggiornamento di sicurezza;
 \item execute\_params: i parametri di esecuzione dell'eseguibile di aggiornamento;
 \item path: l'url del percorso del bucket su cui è stato caricato il file di aggiornamento;
-\item updated\_by: l'utente che ha caricato il file di aggiornamento;
+\item updated\_by: l'ID dell'utente che ha caricato il file di aggiornamento;
 \item s3\_version: la versione di S3 del file di aggiornamento;
 \item created\_at: la data e l'ora di creazione del file;
-\item updated\_at: la data e l'ora di ultima modifica del file.
+\item updated\_at\_id: la data e l'ora di ultima modifica del file.
 \end{itemize}
 
 \noindent \textbf{UpdateJob:}
@@ -139,7 +140,7 @@ utente che l’ha caricato.
 
 \noindent \textbf{UpdateJobStatusHistory:}
 \begin{itemize}
-\item update\_job\_id:  l'ID della sessione di aggiornamento;
+\item update\_job\_id:  l'ID della sessione di aggiornamento relativo al modello UpdateJob;
 \item status: specifica lo stato dell'aggiornamento. I possibili valori sono: “Ready”, 
 “Execute error from provision”, “Waiting for ping”, “Timeout ping”, 
 “Waiting for download process”, “Timeout download”, “Running”, “Timeout running”, “Rebooting”, 
@@ -168,14 +169,26 @@ componenti e gestendo le dipendenze.
 Su Kubernetes, i container sono organizzati e gestiti all'interno di unità 
 chiamate “pod”. Un pod è il più piccolo oggetto di gestione in Kubernetes e 
 rappresenta un singolo insieme di uno o più container, con uno spazio di 
-archiviazione e una rete condivisa. ~\cite{kube:what-is-kubernetes}\\
+archiviazione e una rete condivisa.\\
 
 \noindent Le principali caratteristiche di  Kubernetes sono:
 \begin{itemize}
-\item Orchestrazione: coordina e distribuisce i container su un cluster di macchine (insieme di server). Gestisce automaticamente il posizionamento dei container, il bilanciamento del carico, la scalabilità e il ripristino in caso di errori;
-\item Autoscaling: supporta l'autoscaling automatico in base al carico dell'applicazione. Può aumentare o diminuire il numero di repliche dei container in base alle metriche definite, assicurando che l'applicazione abbia sempre le risorse necessarie per funzionare correttamente;
-\item Gestione delle risorse: consente di definire i requisiti di risorse per i container, come CPU e memoria, e li alloca in modo appropriato all'interno del cluster. Ciò garantisce che le risorse siano utilizzate in modo efficiente e che le applicazioni non interferiscano tra loro;
-\item Rolling updates e rollback: facilita gli aggiornamenti delle applicazioni senza interruzioni. Si possono eseguire aggiornamenti dei container in modo graduale e controllato, monitorando lo stato e, se necessario, effettuando il rollback a una versione precedente.
+\item Orchestrazione: coordina e distribuisce i container su un cluster di 
+macchine (insieme di server). Gestisce automaticamente il posizionamento dei 
+container, il bilanciamento del carico, la scalabilità e il ripristino in 
+caso di errori;
+\item Autoscaling: supporta l'autoscaling automatico in base al carico 
+dell'applicazione. Può aumentare o diminuire il numero di repliche dei 
+container in base alle metriche definite, assicurando che l'applicazione 
+abbia sempre le risorse necessarie per funzionare correttamente;
+\item Gestione delle risorse: consente di definire i requisiti di risorse 
+per i container, come CPU e memoria, e li alloca in modo appropriato 
+all'interno del cluster. Ciò garantisce che le risorse siano utilizzate in 
+modo efficiente e che le applicazioni non interferiscano tra loro;
+\item Rolling updates e rollback: facilita gli aggiornamenti delle applicazioni 
+senza interruzioni. Si possono eseguire aggiornamenti dei container in modo 
+graduale e controllato, monitorando lo stato e, se necessario, effettuando il 
+rollback a una versione precedente ~\cite{kube:what-is-kubernetes}.
 \end{itemize}
 
 Le risorse dell’Hotfix Response Center sono tutte state inserite in un namespace 
@@ -184,14 +197,19 @@ altri microservizi all'interno del cluster.\\
 
 \noindent All’interno del namespace dedicato sono presenti le seguenti risorse:
 \begin{itemize}
-\item Deployment frontend: esegue un pod con il web server nginx che mette a disposizione i file statici del front-end, relativo al pannello di amministrazione;
+\item Deployment frontend: esegue un pod con il web server nginx che mette a 
+disposizione i file statici del front-end, relativo al pannello di amministrazione;
 \item Deployment backend: esegue tre pod che consentono l’esecuzione del backend in Django;
-\item Cronjob di avvio: schedulato ogni 30 minuti. Questo job seleziona tutte le campagne attive e fa partire gli aggiornamenti per i server schedulati in quello slot temporale;
-\item Cronjob di monitoraggio: schedulato ogni 10 minuti. Questo job monitora gli aggiornamenti in corso. Deve controllare che gli aggiornamenti automatici procedano senza problemi rilevando se si verificano dei timeout.
+\item Cronjob di avvio: schedulato ogni 30 minuti. Questo job seleziona 
+tutte le campagne attive e fa partire gli aggiornamenti per i server 
+schedulati in quello slot temporale;
+\item Cronjob di monitoraggio: schedulato ogni 10 minuti. Questo job monitora 
+gli aggiornamenti in corso. Deve controllare che gli aggiornamenti automatici 
+procedano senza problemi rilevando se si verificano dei timeout.
 \end{itemize}
 
 La figura ~\ref{fig:Design architettura} 
-mostra uno schema rappresentativo dell’architettura.
+mostra uno schema semplificato dell’architettura.
 
 \begin{figure}[H]
   \begin{flushright}
@@ -204,7 +222,7 @@ mostra uno schema rappresentativo dell’architettura.
 
 Il rettangolo azzurro rappresenta il namasepace dedicato all'interno del cluster.
 Il backend contatta anche altri microservizi, presenti in altri namespace, dello stesso cluster.
-Ad esempio contatta le API del gestionale per recuperare le informazioni dei server da aggiornare.
+Ad esempio, contatta le API del gestionale per recuperare le informazioni dei server da aggiornare.
 
 
 \subsection{Ansible}

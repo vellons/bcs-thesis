@@ -6,7 +6,7 @@ richieste e delle risposte tra il frontend e il database.
 
 Nel caso dell’Hotfix Response Center il backend è stato sviluppato 
 utilizzando il framework Django, per Python. Django è stato utilizzato assieme 
-alla libreria Django REST framework per realizzare le API REST necessarie per 
+alla libreria Django REST Framework per realizzare le API REST necessarie per 
 la comunicazione tra frontend e backend.
 
 
@@ -93,7 +93,10 @@ gestisce le richieste relative alle campagne. La variabile queryset definisce
 l'insieme di dati su cui operare, in questo caso tutte le campagne ordinate per 
 l'ID. Vengono anche specificati i  filtri e l’ordinamento da utilizzare. 
 La variabile serializer\_class definisce la classe del serializer da utilizzare 
-per la serializzazione dei dati in JSON.
+per la serializzazione dei dati in JSON. 
+Questa vista estende la classe generics.ListCreateAPIView 
+fornita da Django REST Framework e fornisce funzionalità per visualizzare 
+l'elenco delle campagne e creare una nuova campagna.
 
 Nel file serializers.py viene definita la classe CampaignSerializer che gestisce 
 la serializzazione dei dati della campagna. La classe Meta all'interno del 
@@ -104,12 +107,11 @@ sola lettura che non possono essere modificati.
 Nel file urls.py viene definito il percorso delle API per gestire le richieste 
 relative alle campagne. In particolare, quando viene inviata una richiesta all'endpoint 
 /campaigns/, viene utilizzata la classe CampaignListCreateAPIView come vista 
-per gestire la richiesta. Questa vista estende la classe generics.ListCreateAPIView 
-fornita da Django REST Framework e fornisce funzionalità per visualizzare 
-l'elenco delle campagne e creare una nuova campagna.\\
+per gestire la richiesta.\\
 
 Facendo richieste di HTTP GET sull’endpoint /campaigns/ verrà fornito l’elenco 
-delle campagne inserite nel database. Sarà possibile utilizzare i filtri per 
+delle campagne inserite nel database. Sarà possibile utilizzare i filtri 
+come queryparams della richiesta per 
 ricercare tra tutte le campagne solo quelle desiderate. Le informazioni saranno 
 restituite in formato JSON con i campi definiti nel serializer.
 
@@ -166,7 +168,7 @@ Una volta effettuato l'accesso al portale, verrà visualizzato un elenco delle
 campagne già a sistema.\\
 
 Per vedere i dettagli delle campagne precedentemente create basterà fare click 
-sulla riga corrispondente. Per creare una nuova campagna, gli utenti 
+sulla riga corrispondente. Invece, per creare una nuova campagna, gli utenti 
 possono fare click sul bottone “Crea una nuova campagna” posizionato nell'angolo 
 in alto a destra dell’interfaccia.
 
@@ -191,8 +193,8 @@ fine.\\
 
 Nella pagine successive verranno mostrate le schermate relative alla creazione di 
 una campagna di aggiornamento su tutti i Windows Server di un cliente, per installare
-un aggiornamento comulativo rilasciato da Windows con identificativo KB5014850 che
-server a risolvere delle vulnerabilità di sistema.
+un aggiornamento cumulativo rilasciato da Windows con identificativo KB5014850 che
+serve a risolvere delle vulnerabilità di sistema.
 
 \begin{figure}[H]
 \begin{flushright}
@@ -261,7 +263,7 @@ che presentano una programmazione più complessa a causa delle restrizioni impos
 dalle finestre di manutenzione.\\
 
 Prima dell'avvio della campagna, è necessario caricare i file di aggiornamento. 
-In particolare, si mira a risolvere un gruppo di vulnerabilità sui sistemi 
+In particolare, si mira a risolvere un gruppo di vulnerabilità nei sistemi 
 operativi Windows Server utilizzando l'aggiornamento di sicurezza cumulativo 
 con identificativo KB5014850, fornito da Microsoft.
 
@@ -319,7 +321,7 @@ l'aggiornamento è stato installato o meno sul server capendo anche se è
 necessario un riavvio per poterlo applicare correttamente.
 
 In ogni caso, per verificare la corretta applicazione dell'aggiornamento di 
-sicurezza applicato da questa campagna d’esempio, è sufficiente collegarsi al 
+sicurezza applicato dalla campagna presa in analisi, è sufficiente collegarsi al 
 server e verificare manualmente l’installazione lanciando il comando “Get-Hotfix” 
 su una console Powershell con privilegi di amministratore.
 
@@ -333,5 +335,5 @@ su una console Powershell con privilegi di amministratore.
 \end{figure}
 
 Nel server in questione possiamo notare che l'ultimo aggiornamento installato è
-proprio l'aggiornamento comulativo KB5014850 che conferma quindi l'installazione
+proprio l'aggiornamento cumulativo KB5014850 che conferma quindi l'installazione
 remota e automatica dell'aggiornamento di sicurezza, attraverso la campagna di Hotfix.
