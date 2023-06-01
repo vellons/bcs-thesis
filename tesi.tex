@@ -214,9 +214,9 @@
   \pagenumbering{roman}
   \setcounter{page}{1}
   \setcounter{tocdepth}{2}
+
+  \include{abstract/abstract}
   \tableofcontents
-  \listoffigures
-  \listoftables
 
   %% Inizio capitoli
   \mainmatter{}
@@ -249,12 +249,14 @@
   \include{cap5/cap5}
 
   \appendix
-  %%\include{ringraziamenti/ringraziamenti}
+  \include{ringraziamenti/ringraziamenti}
   
   \backmatter{}
 
   %% Bibliografia
   \bibliography{biblio/biblio} 
+  \listoffigures
+  \listoftables
   \bibliographystyle{ieeetr}
 
 \end{document}

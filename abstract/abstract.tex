@@ -1,0 +1,63 @@
+\chapter*{Sommario}
+Nell'era digitale in cui viviamo, i software che regolano le nostre 
+infrastrutture e le reti tecnologiche sono sempre più esposte a minacce 
+e attacchi informatici. Tali attacchi
+possono essere messi in atto sfruttando vulnerabilità presenti nei sistemi 
+informatici, mettendo a repentaglio la sicurezza delle aziende e/o delle 
+infrastrutture nazionali.
+Nel mio progetto di tesi, ho approfondito il tema delle vulnerabilità nei 
+software, sviluppando uno strumento semi-automatico in grado di gestire 
+l’aggiornamento tempestivo dei server affetti da vulnerabilità, per poter 
+mettere in sicurezza i sistemi informatici nel più breve tempo possibile.
+\newline
+
+Il progetto realizzato ha l'obiettivo di gestire l’aggiornamento straordinario 
+di server Linux e Windows, impattati da vulnerabilità critiche. Lo strumento 
+sarà utilizzato creando campagne di aggiornamento che possono includere 
+centinaia di server dei clienti, impattati dalla vulnerabilità. 
+L'obiettivo del progetto è trovare una schedulazione ottimale per aggiornare 
+tutti i server della campagna, connettersi da remoto ai server e installare 
+in modo autonomo l'aggiornamento rilasciato dal produttore del software.
+
+Le campagne di aggiornamento hanno una durata limitata in cui tutti i server 
+devono avere a disposizione due ore per essere aggiornati. Per trovare una 
+schedulazione ottimale l’algoritmo realizzato deve tenere in considerazione 
+diversi fattori, il più importante è la fascia di manutenzione. 
+Per ogni server è definito un periodo durante la settimana in cui può essere 
+fuori servizio, per attività di manutenzione.
+\newline
+
+L’algoritmo sviluppato per la generazione del calendario di aggiornamento non 
+è stato sviluppato per trovare la soluzione ottimale, andando a provare ogni 
+singola combinazione di schedulazione, ma utilizza un approccio euristico per 
+garantire in un tempo lineare una schedulazione efficiente che è molto simile 
+alla soluzione ottimale.
+L’approccio euristico utilizza la conoscenza di un problema per trovare la 
+soluzione a problemi complessi in tempi ragionevoli. Tramite questo approccio, 
+prima di cercare la schedulazione dei server, viene calcolato un punteggio per 
+ogni server, che dipende da vari fattori (tra cui il numero di ore in cui il 
+server è disponibile durante la settimana per la manutenzione). Successivamente, 
+partendo dai server con il punteggio più basso, si procede in modo lineare 
+all’assegnazione dei server alle varie fasce di manutenzione, della campagna di 
+aggiornamento. Questo algoritmo garantisce un notevole vantaggio in termini di 
+ottimizzazione e riduzione dei tempi. Per trovare la schedulazione di 500 server 
+sono necessari 0.6 secondi.
+
+Lo strumento realizzato è indipendente da qualsiasi altro strumento ed è composto 
+da un’interfaccia grafica (frontend, realizzato con il framework Vue.js), da dei 
+servizi REST (backend, realizzati in Python utilizzando il framework Django), 
+da un database sql, da uno storage per il caricamento dei file di aggiornamento e 
+da due script necessari all’installazione dell’aggiornamento di sicurezza, 
+uno specifico per Windows (scritto in Powershell) e uno per Linux (scritto in Bash).
+\newline
+
+Tramite l’interfaccia l’operatore può creare campagne di aggiornamento, monitorare 
+lo stato delle campagne di aggiornamento in corso e lo stato dei singoli 
+aggiornamenti sui server. Gli aggiornamenti verranno effettuati in modo automatico 
+all’orario prestabilito dall’algoritmo.
+\newline
+
+In futuro è in programma lo sviluppo di ulteriori funzionalità per rendere 
+automatica la creazione delle campagne di aggiornamento, effettuando controlli 
+proattivi sui software installati nei server e verificando se sono affetti da 
+vulnerabilità per cui è già disponibile un aggiornamento.
