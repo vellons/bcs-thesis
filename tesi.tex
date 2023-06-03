@@ -187,7 +187,7 @@
    /Author (Alex Vellone)
    /Title  (Strumento per installazione rapida e remota di aggiornamenti di sicurezza sui server)
    /PdfTitle (Strumento per installazione rapida e remota di aggiornamenti di sicurezza sui server)
-   /CreationDate (D:20230525001500)  %format D:YYYYMMDDhhmmss
+   /CreationDate (D:20230603134500)  %format D:YYYYMMDDhhmmss GMT
    /Subject (Hotfix Response Center)
    /Keywords (Hotfix,Vulnerability,CVE,Security,Tool)
 }
@@ -202,9 +202,9 @@
   %% Dedica
   \frontmatter{}
   \begin{flushright}
-    \vspace*{2cm}
+    \vspace*{4cm}
     \textit{ 
-    Ai miei genitori
+      Ai miei genitori e a mia nonna Maria
     }
     \vspace{2.5cm}
   \end{flushright}
@@ -248,15 +248,26 @@
   \include{cap4/cap4}
   \include{cap5/cap5}
 
-  \appendix
   \include{ringraziamenti/ringraziamenti}
+  \appendix
   
   \backmatter{}
 
   %% Bibliografia
-  \bibliography{biblio/biblio} 
   \listoffigures
   \listoftables
+  \addcontentsline{toc}{chapter}{Bibliografia} % add it to the table of contents
+  \bibliography{biblio/biblio} 
   \bibliographystyle{ieeetr}
+
+  %% Chiusura
+  \cleardoublepage{}
+  \pagestyle{empty}
+  \begin{flushright}
+    \vspace*{19.5cm}
+    \textit{ 
+      13 giugno 2023
+    }
+  \end{flushright}
 
 \end{document}
