@@ -24,6 +24,7 @@
 \usepackage[times]{quotchap}
 \usepackage{multirow}
 \usepackage{version}
+\usepackage{afterpage}
 
 \usepackage{listings}
 \usepackage{color}
@@ -146,6 +147,12 @@
  \label{#2}
 }}
 
+\newcommand\blankpage{
+    \null
+    \thispagestyle{empty}
+    \addtocounter{page}{-1}
+    \newpage}
+
 %% Gestione header: no header sulle dispari bianche
 \makeatletter
 \def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else%
@@ -187,7 +194,7 @@
    /Author (Alex Vellone)
    /Title  (Strumento per installazione rapida e remota di aggiornamenti di sicurezza sui server)
    /PdfTitle (Strumento per installazione rapida e remota di aggiornamenti di sicurezza sui server)
-   /CreationDate (D:20230603134500)  %format D:YYYYMMDDhhmmss GMT
+   /CreationDate (D:20230603153300)  %format D:YYYYMMDDhhmmss GMT
    /Subject (Hotfix Response Center)
    /Keywords (Hotfix,Vulnerability,CVE,Security,Tool)
 }
@@ -209,6 +216,8 @@
     \vspace{2.5cm}
   \end{flushright}
   \cleardoublepage
+
+  \afterpage{\blankpage}
 
   %% Indice ed elenchi
   \pagenumbering{roman}
@@ -248,11 +257,13 @@
   \include{cap4/cap4}
   \include{cap5/cap5}
 
+  \afterpage{\blankpage}
   \include{ringraziamenti/ringraziamenti}
   \appendix
   
   \backmatter{}
 
+  \afterpage{\blankpage}
   %% Bibliografia
   \listoffigures
   \listoftables
@@ -261,6 +272,7 @@
   \bibliographystyle{ieeetr}
 
   %% Chiusura
+  \afterpage{\blankpage}
   \cleardoublepage{}
   \pagestyle{empty}
   \begin{flushright}
