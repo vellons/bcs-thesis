@@ -1,7 +1,14 @@
 # My bachelor's thesis
 Università degli studi dell'Insubria.
 
+Title: Tool for quick and remote installation of security updates on servers.
+
+Titolo: Strumento per l’installazione rapida e remota di aggiornamenti di sicurezza sui server.
+
+
 ## Riassunto (italiano)
+<u>Estratto dal capitolo 4</u>
+
 Al giorno d’oggi i software controllano praticamente ogni cosa: i nostri telefoni, le nostre
 infrastrutture critiche, le nostre macchine, gli apparecchi medici e molto altro.
 
